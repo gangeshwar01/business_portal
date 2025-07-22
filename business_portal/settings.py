@@ -139,8 +139,12 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Media files (user uploads)
-MEDIA_ROOT = BASE_DIR / 'static' / 'media'
-MEDIA_URL = '/static/media/'
+if os.getenv("RENDER", "False") == "True":
+    MEDIA_ROOT = BASE_DIR / 'static' / 'media'
+    MEDIA_URL = '/static/media/'
+else:
+    MEDIA_ROOT = BASE_DIR / 'media'
+    MEDIA_URL = '/media/'
 
 # Default storage for static files
 STORAGES = {
