@@ -138,6 +138,10 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# Media files (user uploads)
+MEDIA_ROOT = BASE_DIR / 'static' / 'media'
+MEDIA_URL = '/static/media/'
+
 # Default storage for static files
 STORAGES = {
     "default": {
