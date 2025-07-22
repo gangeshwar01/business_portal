@@ -1,87 +1,77 @@
-# Employee Verification Portal
+# Business Listing Portal
 
-A comprehensive web application for managing employee verification, certificates, and administrative tasks. Built with Django and deployed on Render.
+A comprehensive web application for managing business listings, subscriptions, and administrative tasks. Built with Django and deployed on Render.
 
 ## Features
 
 - **Admin Portal**
   - Secure admin authentication
-  - Employee management
-  - Certificate verification
-  - Task management
-  - Department management
-  - User group management
-  - Competency tracking
+  - Business listing management
+  - User management
+  - Subscription and payment tracking
 
-- **Employee Portal**
-  - Employee login with ID
-  - Certificate upload and tracking
-  - Task viewing
+- **User Portal**
+  - User registration and login
+  - Create and manage business listings
+  - Subscription plan selection
   - Profile management
 
 ## Tech Stack
 
-- Python 3.9
-- Django 5.0
+- Python 3.12
+- Django 5.2.4
 - PostgreSQL
 - Bootstrap
 - Whitenoise for static files
 
 ## Setup Instructions
 
-1. Clone the repository:
-```bash
-git clone https://github.com/gangeshwar01/Python-Developer-Employee-Verification-Portal.git
-cd Python-Developer-Employee-Verification-Portal
-```
+1.  Clone the repository:
+    ```bash
+    git clone <your-repository-url>
+    cd Business_Listing_Portal
+    ```
 
-2. Create and activate virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+2.  Create and activate virtual environment:
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows: venv\Scripts\activate
+    ```
 
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+3.  Install dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-4. Set up environment variables:
-```bash
-cp .env.example .env
-# Edit .env with your configuration
-```
+4.  Set up environment variables:
+    For local development, you would typically use a `.env` file. For production on Render, these are set in the `render.yaml` file.
 
-5. Run migrations:
-```bash
-python manage.py migrate
-```
+5.  Run migrations:
+    ```bash
+    python manage.py migrate
+    ```
 
-6. Create superuser:
-```bash
-python manage.py createsuperuser
-```
+6.  Create superuser:
+    ```bash
+    python manage.py createsuperuser
+    ```
 
-7. Run development server:
-```bash
-python manage.py runserver
-```
+7.  Run development server:
+    ```bash
+    python manage.py runserver
+    ```
 
 ## Deployment
 
-The application is configured for deployment on Render. The `render.yaml` file contains the necessary configuration for:
-- Web service
-- PostgreSQL database
-- Environment variables
-- Build and start commands
+The application is configured for deployment on Render. The `render.yaml` file automatically handles the setup of the web service and a PostgreSQL database.
 
 ## Contributing
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1.  Fork the repository.
+2.  Create your feature branch (`git checkout -b feature/AmazingFeature`).
+3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`).
+4.  Push to the branch (`git push origin feature/AmazingFeature`).
+5.  Open a Pull Request.
 
 ## License
 
