@@ -54,16 +54,16 @@ def home(request):
     plans = SubscriptionPlan.objects.filter(is_active=True).order_by('price')
 
     admin_users = User.objects.filter(is_staff=True)
-    from .models import Review
+    from .models import Review, Business
 
-    if request.user.is_authenticated:
-        # Only show this user's approved businesses
+    if request.user.is_authenticated and request.user.is_staff:
+        total_businesses = Business.objects.filter(status='active').count()
+        total_reviews = Review.objects.filter(user__in=admin_users).count()
+    elif request.user.is_authenticated:
         total_businesses = Business.objects.filter(owner=request.user, status='active').count()
-        # Only show reviews made by admin users on this user's businesses
         user_businesses = Business.objects.filter(owner=request.user)
         total_reviews = Review.objects.filter(business__in=user_businesses, user__in=admin_users).count()
     else:
-        # Site-wide stats (current logic)
         total_businesses = Business.objects.filter(status='active').count()
         total_reviews = Review.objects.filter(user__in=admin_users).count()
 
@@ -298,7 +298,10 @@ def about(request):
     """About page"""
     admin_users = User.objects.filter(is_staff=True)
     from .models import Review, Business
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.is_staff:
+        total_businesses = Business.objects.filter(status='active').count()
+        total_reviews = Review.objects.filter(user__in=admin_users).count()
+    elif request.user.is_authenticated:
         total_businesses = Business.objects.filter(owner=request.user, status='active').count()
         user_businesses = Business.objects.filter(owner=request.user)
         total_reviews = Review.objects.filter(business__in=user_businesses, user__in=admin_users).count()
