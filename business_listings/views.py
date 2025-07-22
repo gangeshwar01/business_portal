@@ -618,7 +618,7 @@ def export_businesses(request, format):
                     pdf.cell(50, 8, field_name, border=1)
                     pdf.set_font('Arial', '', 10)
                     pdf.cell(0, 8, val[:1000], border=1, ln=1)
-        pdf_bytes = bytes(pdf.output(dest='S'))
+        pdf_bytes = pdf.output(dest='S').encode('latin1')
         response = HttpResponse(pdf_bytes, content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="businesses.pdf"'
         return response
