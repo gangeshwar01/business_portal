@@ -1,0 +1,318 @@
+{% extends 'base.html' %}
+
+{% block title %}Business Directory - All Businesses{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/css/business_listings.css">
+
+<!-- Search and Filters -->
+<section class="py-4 border-bottom">
+    <div class="container">
+        <form method="GET" action="{% url 'business_listings:business_list' %}">
+            <div class="search-card">
+                <input type="text" name="q" class="form-control" placeholder="Search businesses..." value="{% if query and query != 'None' %}{{ query }}{% endif %}">
+                <select name="sort" class="form-control">
+                    <option value="newest" {% if sort_by == 'newest' %}selected{% endif %}>Newest First</option>
+                    <option value="oldest" {% if sort_by == 'oldest' %}selected{% endif %}>Oldest First</option>
+                    <option value="rating" {% if sort_by == 'rating' %}selected{% endif %}>Highest Rated</option>
+                    <option value="name" {% if sort_by == 'name' %}selected{% endif %}>Name A-Z</option>
+                </select>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search me-1"></i>Search
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+<div class="bg-light w-100">
+    <hr>
+</div>
+<!-- Results Section -->
+<div class="animated-shapes-bg">
+  <!-- Example polygons, triangles, circles, etc. -->
+  <svg class="shape shape-1" width="120" height="120"><polygon points="60,10 110,110 10,110" fill="#a3e635" opacity="0.18"/></svg>
+  <svg class="shape shape-2" width="80" height="80"><rect x="10" y="10" width="60" height="60" rx="18" fill="#22c55e" opacity="0.13"/></svg>
+  <svg class="shape shape-3" width="100" height="100"><ellipse cx="50" cy="50" rx="40" ry="30" fill="#15803d" opacity="0.10"/></svg>
+  <svg class="shape shape-4" width="90" height="90"><polygon points="45,10 80,80 10,80" fill="#bbf7d0" opacity="0.15"/></svg>
+  <svg class="shape shape-5" width="70" height="70"><rect x="5" y="5" width="60" height="60" rx="30" fill="#0ba99c" opacity="0.12"/></svg>
+  <svg class="shape shape-6" width="110" height="110"><polygon points="55,10 100,100 10,100" fill="#a3e635" opacity="0.13"/></svg>
+  <svg class="shape shape-7" width="60" height="60"><ellipse cx="30" cy="30" rx="25" ry="15" fill="#22c55e" opacity="0.10"/></svg>
+  <svg class="shape shape-8" width="100" height="100"><rect x="20" y="20" width="60" height="60" rx="10" fill="#15803d" opacity="0.10"/></svg>
+  <svg class="shape shape-9" width="80" height="80"><polygon points="40,10 70,70 10,70" fill="#bbf7d0" opacity="0.14"/></svg>
+  <svg class="shape shape-10" width="90" height="90"><ellipse cx="45" cy="45" rx="35" ry="20" fill="#0ba99c" opacity="0.10"/></svg>
+  <svg class="shape shape-11" width="60" height="60"><rect x="10" y="10" width="40" height="40" rx="20" fill="#a3e635" opacity="0.10"/></svg>
+  <svg class="shape shape-12" width="100" height="100"><polygon points="50,10 90,90 10,90" fill="#22c55e" opacity="0.10"/></svg>
+  <svg class="shape shape-13" width="70" height="70"><ellipse cx="35" cy="35" rx="30" ry="10" fill="#15803d" opacity="0.10"/></svg>
+  <svg class="shape shape-14" width="80" height="80"><rect x="15" y="15" width="50" height="50" rx="25" fill="#bbf7d0" opacity="0.10"/></svg>
+  <svg class="shape shape-15" width="120" height="120"><polygon points="60,20 110,110 10,110" fill="#0ba99c" opacity="0.10"/></svg>
+</div>
+<section class="py-5 business-results-section">
+    <div class="container">
+        <!-- Results Header -->
+        <div class="row mb-4">
+            <div class="col-lg-8">
+                {% if query or selected_category or selected_city %}
+                    <h4>Search Results</h4>
+                    <p class="text-muted">
+                        {% if page_obj %}
+                            Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} results
+                        {% else %}
+                            No results found
+                        {% endif %}
+                    </p>
+                {% else %}
+                    <h4>All Businesses</h4>
+                    <p class="text-muted">
+                        {% if page_obj %}
+                            Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} businesses
+                        {% endif %}
+                    </p>
+                {% endif %}
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-secondary active" id="grid-view" title="Grid View">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" id="list-view" title="List View">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Business Listings -->
+        {% if page_obj %}
+            <div class="row" id="business-grid">
+                {% for business in page_obj %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card business-card h-100">
+                        {% if business.cover_image %}
+                            <img src="{{ business.cover_image.url }}" class="card-img-top business-image" alt="{{ business.name }}">
+                        {% else %}
+                            <div class="card-img-top business-image bg-light d-flex align-items-center justify-content-center">
+                                <i class="fas fa-building fa-3x text-muted"></i>
+                            </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="card-title mb-0">{{ business.name }}</h5>
+                                {% if business.is_featured %}
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="fas fa-star me-1"></i>Featured
+                                    </span>
+                                {% endif %}
+                                {% if business.status != 'active' %}
+                                    <span class="badge bg-secondary ms-2 text-uppercase{% if business.status == 'suspended' %} suspended{% endif %}">{{ business.status }}</span>
+                                {% endif %}
+                            </div>
+                            {% if business.status != 'active' and business.admin_review %}
+                                <div class="alert alert-warning mt-2 mb-2 p-2">
+                                    <strong>Admin Review:</strong> {{ business.admin_review }}
+                                </div>
+                            {% endif %}
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-map-marker-alt me-1"></i>
+                                {% if business.city and business.city != 'None' %}{{ business.city }}{% endif %}
+                                {% if business.state and business.state != 'None' %}, {{ business.state }}{% endif %}
+                            </p>
+                            {% if business.category %}
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-tag me-1"></i>{{ business.category.name }}
+                            </p>
+                            {% endif %}
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-clock me-1"></i>
+                                {% if business.operating_days %}
+                                    {{ business.operating_days }}
+                                {% endif %}
+                                {% if business.hours_of_operation %}
+                                    <span class="d-block">{{ business.hours_of_operation|truncatechars:40 }}</span>
+                                {% endif %}
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="rating">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= business.rating %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <span class="ms-1 text-muted">({{ business.total_reviews }})</span>
+                                </div>
+                                <small class="text-muted">
+                                    <i class="fas fa-eye me-1"></i>{{ business.views }} views
+                                </small>
+                            </div>
+                            <p class="card-text">{{ business.description|truncatewords:15 }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="{% url 'business_listings:business_detail' business.id %}" class="btn btn-primary btn-sm">
+                                    View Details
+                                </a>
+                                <small class="text-muted">
+                                    <i class="fas fa-clock me-1"></i>{{ business.created_at|timesince }} ago
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- List View (Hidden by default) -->
+            <div class="row d-none" id="business-list">
+                {% for business in page_obj %}
+                <div class="col-12 mb-3">
+                    <div class="card">
+                        <div class="row g-0">
+                            <div class="col-md-3">
+                                {% if business.cover_image %}
+                                    <img src="{{ business.cover_image.url }}" class="img-fluid rounded-start h-100" style="object-fit: cover;" alt="{{ business.name }}">
+                                {% else %}
+                                    <div class="bg-light d-flex align-items-center justify-content-center h-100">
+                                        <i class="fas fa-building fa-3x text-muted"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-9">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <h5 class="card-title">{{ business.name }}</h5>
+                                        {% if business.is_featured %}
+                                            <span class="badge bg-warning text-dark">
+                                                <i class="fas fa-star me-1"></i>Featured
+                                            </span>
+                                        {% endif %}
+                                        {% if business.status != 'active' %}
+                                            <span class="badge bg-secondary ms-2 text-uppercase{% if business.status == 'suspended' %} suspended{% endif %}">{{ business.status }}</span>
+                                        {% endif %}
+                                    </div>
+                                    {% if business.status != 'active' and business.admin_review %}
+                                        <div class="alert alert-warning mt-2 mb-2 p-2">
+                                            <strong>Admin Review:</strong> {{ business.admin_review }}
+                                        </div>
+                                    {% endif %}
+                                    <p class="text-muted mb-2">
+                                        <i class="fas fa-map-marker-alt me-1"></i>
+                                        {% if business.city and business.city != 'None' %}{{ business.city }}{% endif %}
+                                        {% if business.state and business.state != 'None' %}, {{ business.state }}{% endif %}
+                                        {% if business.category %}
+                                        <span class="ms-3"><i class="fas fa-tag me-1"></i>{{ business.category.name }}</span>
+                                        {% endif %}
+                                    </p>
+                                    <p class="text-muted mb-2">
+                                        <i class="fas fa-clock me-1"></i>
+                                        {% if business.operating_days %}
+                                            {{ business.operating_days }}
+                                        {% endif %}
+                                        {% if business.hours_of_operation %}
+                                            <span class="d-block">{{ business.hours_of_operation|truncatechars:40 }}</span>
+                                        {% endif %}
+                                    </p>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="rating">
+                                            {% for i in "12345" %}
+                                                {% if forloop.counter <= business.rating %}
+                                                    <i class="fas fa-star"></i>
+                                                {% else %}
+                                                    <i class="far fa-star"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                            <span class="ms-1 text-muted">({{ business.total_reviews }})</span>
+                                        </div>
+                                        <small class="text-muted">
+                                            <i class="fas fa-eye me-1"></i>{{ business.views }} views
+                                            <span class="ms-2"><i class="fas fa-clock me-1"></i>{{ business.created_at|timesince }} ago</span>
+                                        </small>
+                                    </div>
+                                    <p class="card-text">{{ business.description|truncatewords:25 }}</p>
+                                    <a href="{% url 'business_listings:business_detail' business.id %}" class="btn btn-primary btn-sm">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if page_obj.has_other_pages %}
+            <nav aria-label="Business pagination" class="mt-5">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{% if query %}q={{ query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}{% if selected_city %}city={{ selected_city }}&{% endif %}{% if sort_by %}sort={{ sort_by }}&{% endif %}page=1">
+                                <i class="fas fa-angle-double-left"></i>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?{% if query %}q={{ query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}{% if selected_city %}city={{ selected_city }}&{% endif %}{% if sort_by %}sort={{ sort_by }}&{% endif %}page={{ page_obj.previous_page_number }}">
+                                <i class="fas fa-angle-left"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ num }}</span>
+                            </li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{% if query %}q={{ query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}{% if selected_city %}city={{ selected_city }}&{% endif %}{% if sort_by %}sort={{ sort_by }}&{% endif %}page={{ num }}">{{ num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{% if query %}q={{ query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}{% if selected_city %}city={{ selected_city }}&{% endif %}{% if sort_by %}sort={{ sort_by }}&{% endif %}page={{ page_obj.next_page_number }}">
+                                <i class="fas fa-angle-right"></i>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?{% if query %}q={{ query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}{% if selected_city %}city={{ selected_city }}&{% endif %}{% if sort_by %}sort={{ sort_by }}&{% endif %}page={{ page_obj.paginator.num_pages }}">
+                                <i class="fas fa-angle-double-right"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+
+        {% else %}
+            <!-- No Results -->
+            <div class="text-center py-5">
+                <i class="fas fa-search fa-4x text-muted mb-4"></i>
+                <h4>No businesses found</h4>
+                <p class="text-muted">Try adjusting your search criteria or browse all businesses.</p>
+                <a href="{% url 'business_listings:business_list' %}" class="btn btn-primary">
+                    <i class="fas fa-list me-2"></i>View All Businesses
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // View toggle functionality
+    document.getElementById('grid-view').addEventListener('click', function() {
+        document.getElementById('business-grid').classList.remove('d-none');
+        document.getElementById('business-list').classList.add('d-none');
+        document.getElementById('grid-view').classList.add('active');
+        document.getElementById('list-view').classList.remove('active');
+    });
+
+    document.getElementById('list-view').addEventListener('click', function() {
+        document.getElementById('business-grid').classList.add('d-none');
+        document.getElementById('business-list').classList.remove('d-none');
+        document.getElementById('grid-view').classList.remove('active');
+        document.getElementById('list-view').classList.add('active');
+    });
+</script>
+{% endblock %} 

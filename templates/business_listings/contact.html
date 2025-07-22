@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us - Business Directory{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="py-5 text-white" style="background: linear-gradient(90deg, #a8ff78 0%, #78ffd6 50%, #007cf0 100%);">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-4">Contact Us</h1>
+        <p class="lead">We'd love to hear from you. Get in touch with us!</p>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Contact Form -->
+            <div class="col-lg-8">
+                <div class="card" style="background-color: #add1d2;">
+                    <div class="card-body p-5">
+                        <h3 class="fw-bold mb-4">Send us a Message</h3>
+                        
+                        <form method="POST">
+                            {% csrf_token %}
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.name.id_for_label }}" class="form-label">Your Name *</label>
+                                    {{ form.name }}
+                                    {% if form.name.errors %}
+                                        <div class="text-danger small">{{ form.name.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.email.id_for_label }}" class="form-label">Email Address *</label>
+                                    {{ form.email }}
+                                    {% if form.email.errors %}
+                                        <div class="text-danger small">{{ form.email.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.mobile_no.id_for_label }}" class="form-label">Mobile No.</label>
+                                    {{ form.mobile_no }}
+                                    {% if form.mobile_no.errors %}
+                                        <div class="text-danger small">{{ form.mobile_no.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="{{ form.subject.id_for_label }}" class="form-label">Subject *</label>
+                                {{ form.subject }}
+                                {% if form.subject.errors %}
+                                    <div class="text-danger small">{{ form.subject.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="{{ form.contact_type.id_for_label }}" class="form-label">Inquiry Type</label>
+                                {{ form.contact_type }}
+                                {% if form.contact_type.errors %}
+                                    <div class="text-danger small">{{ form.contact_type.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="{{ form.message.id_for_label }}" class="form-label">Message *</label>
+                                {{ form.message }}
+                                {% if form.message.errors %}
+                                    <div class="text-danger small">{{ form.message.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-lg" style="background-color: #08c22a;">
+                                <i class="fas fa-paper-plane me-2"></i>Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contact Information -->
+            <div class="col-lg-4">
+                <div class="card mb-4" style="background-color: #9fe8eb;">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-4">
+                            <i class="fas fa-info-circle me-2 text-primary"></i>Contact Information
+                        </h5>
+                        
+                        <div class="d-flex mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-envelope text-primary me-3"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold">Email</h6>
+                                <p class="mb-0">support@zikrme.com</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-map-marker-alt text-primary me-3"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold">Address</h6>
+                                <!-- <p class="mb-0">Zikrme<br>India<br></p> -->
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-clock text-primary me-3"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold">Business Hours</h6>
+                                <p class="mb-0">Monday - Friday: 9AM - 6PM<br>Saturday: 10AM - 4PM<br>Sunday: Closed</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="card" style="background-color: #9fe8eb;">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-4">
+                            <i class="fas fa-link me-2 text-primary"></i>Quick Links
+                        </h5>
+                        
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <a href="{% url 'business_listings:add_business' %}" class="text-decoration-none">
+                                    <i class="fas fa-plus me-2"></i>Add Your Business
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="{% url 'business_listings:business_list' %}" class="text-decoration-none">
+                                    <i class="fas fa-list me-2"></i>Browse Businesses
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="{% url 'business_listings:about' %}" class="text-decoration-none">
+                                    <i class="fas fa-info-circle me-2"></i>About Us
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="#" class="text-decoration-none">
+                                    <i class="fas fa-question-circle me-2"></i>FAQ
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'business_listings:privacy_policy' %}" class="text-decoration-none" target="_blank" rel="noopener">
+                                    <i class="fas fa-file-alt me-2"></i>Privacy Policy
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-5" style="background-color: #add1d2;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Frequently Asked Questions</h2>
+            <p class="lead text-muted">Find answers to common questions</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card mb-4" style="background-color: #FFFFFF;">
+                    <div class="card-body">
+                        <h5 class="fw-bold">
+                            <i class="fas fa-question-circle text-primary me-2"></i>How do I add my business?
+                        </h5>
+                        <p class="text-muted mb-0">Simply create an account, click "Add Business" and fill out the form with your business details. We'll review and approve your listing within 24-48 hours.</p>
+                    </div>
+                </div>
+                
+                <div class="card mb-4" style="background-color: #FFFFFF;">
+                    <div class="card-body">
+                        <h5 class="fw-bold">
+                            <i class="fas fa-question-circle text-primary me-2"></i>Is it free to list my business?
+                        </h5>
+                        <p class="text-muted mb-0">Yes! Basic business listings are completely free. We also offer premium features for businesses that want enhanced visibility.</p>
+                    </div>
+                </div>
+                
+                <div class="card mb-4" style="background-color: #FFFFFF;">
+                    <div class="card-body">
+                        <h5 class="fw-bold">
+                            <i class="fas fa-question-circle text-primary me-2"></i>How do reviews work?
+                        </h5>
+                        <p class="text-muted mb-0">Customers can leave reviews and ratings for businesses they've used. Reviews help other customers make informed decisions.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card mb-4" style="background-color: #FFFFFF;">
+                    <div class="card-body">
+                        <h5 class="fw-bold">
+                            <i class="fas fa-question-circle text-primary me-2"></i>Can I edit my business listing?
+                        </h5>
+                        <p class="text-muted mb-0">Yes, you can edit your business information at any time by logging into your account and accessing your business dashboard.</p>
+                    </div>
+                </div>
+                
+                <div class="card mb-4" style="background-color: #FFFFFF;">
+                    <div class="card-body">
+                        <h5 class="fw-bold">
+                            <i class="fas fa-question-circle text-primary me-2"></i>How do I contact a business?
+                        </h5>
+                        <p class="text-muted mb-0">Each business listing includes contact information such as phone number, email, and website. You can contact them directly using these details.</p>
+                    </div>
+                </div>
+                
+                <div class="card mb-4" style="background-color: #FFFFFF;">
+                    <div class="card-body">
+                        <h5 class="fw-bold">
+                            <i class="fas fa-question-circle text-primary me-2"></i>What if I find incorrect information?
+                        </h5>
+                        <p class="text-muted mb-0">If you find incorrect information about a business, please contact us and we'll investigate and correct it as soon as possible.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h3 class="fw-bold">Find Us</h3>
+            <p class="text-muted">Visit our office or get in touch online</p>
+        </div>
+        
+        <div class="card">
+            <div class="card-body p-0">
+                <div class="p-5 text-center" style="background-color: #9fe8eb;">
+                    <i class="fas fa-map-marked-alt fa-4x text-primary mb-3"></i>
+                    <h5 class="fw-bold">Business Directory Headquarters</h5>
+                    <!-- <p class="text-muted mb-0">123 Business Street, City, State 12345, India</p> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

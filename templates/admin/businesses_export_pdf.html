@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Business Export PDF</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 12px; }
+        h2 { text-align: center; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #888; padding: 4px 8px; }
+        th { background: #f0f0f0; }
+        tr:nth-child(even) { background: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <h2>Business Export ({{ businesses|length }} businesses)</h2>
+    <p>Exported on: {{ now|date:'Y-m-d H:i' }}</p>
+    <table>
+        <thead>
+            <tr>
+                {% for field in fields %}
+                <th>{{ field|capfirst|replace:'_',' ' }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for business in businesses %}
+            <tr>
+                {% for field in fields %}
+                <td>{{ business|getattribute:field }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html> 

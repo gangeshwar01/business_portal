@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/admin_dashboard.css">
+<div class="container py-5 d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+  <div class="card shadow-lg w-100" style="max-width: 700px; border-radius: 1rem; background: #b7d6d6; color: #222;">
+    <div class="card-body p-5">
+      <div class="text-center mb-4">
+        <div id="icon-preview" style="font-size: 2.5rem; margin-bottom: 0.5rem;"></div>
+        <h3 class="fw-bold mb-0">{{ action }} Plan</h3>
+      </div>
+      <form method="post" autocomplete="off">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="id_name" class="form-label">{{ form.name.label }}</label>
+            {{ form.name }}
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="id_price" class="form-label">{{ form.price.label }}</label>
+            {{ form.price }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="id_duration_days" class="form-label">{{ form.duration_days.label }}</label>
+            {{ form.duration_days }}
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="id_badge_color" class="form-label">{{ form.badge_color.label }}</label>
+            {{ form.badge_color }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3 d-flex align-items-end">
+            <div class="form-check form-switch ms-2">
+              {{ form.is_active }}
+              <label class="form-check-label ms-2" for="id_is_active">Active</label>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="id_description" class="form-label">{{ form.description.label }}</label>
+          {{ form.description }}
+        </div>
+        <div class="mb-3">
+          <label for="id_features" class="form-label">{{ form.features.label }}</label>
+          {{ form.features }}
+        </div>
+        <div class="d-grid mt-4">
+          <button type="submit" class="btn btn-success btn-lg fw-bold"><i class="fas fa-save me-2"></i>Save Plan</button>
+        </div>
+        <div class="d-grid mt-2">
+          <a href="{% url 'business_listings:admin_plan_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+function updateIconPreview() {
+  var name = document.getElementById('id_name').value;
+  var icon = '';
+  if (name === 'basic') icon = '<i class="fas fa-gem"></i>';
+  else if (name === 'standard') icon = '<i class="fas fa-star"></i>';
+  else if (name === 'premium') icon = '<i class="fas fa-crown"></i>';
+  document.getElementById('icon-preview').innerHTML = icon;
+}
+document.addEventListener('DOMContentLoaded', function() {
+  var nameField = document.getElementById('id_name');
+  if (nameField) {
+    nameField.addEventListener('change', updateIconPreview);
+    updateIconPreview();
+  }
+});
+</script>
+{% endblock %} 

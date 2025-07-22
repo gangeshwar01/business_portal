@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5" style="background: #181f2a; min-height: 100vh;">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold" style="color: #ffd700;"><i class="fas fa-crown me-2"></i>Choose Your Plan</h2>
+      <p class="lead text-white">Boost your business visibility and reach more customers with our premium plans</p>
+    </div>
+    <div class="row justify-content-center align-items-stretch">
+      {% for plan in plans %}
+      <div class="col-md-4 mb-4 d-flex align-items-stretch" style="height: 100%;">
+        <div class="card text-center h-100" style="
+          position: relative;
+          {% if plan.name == 'basic' %}background: #2d2e83; color: #fff; border: 2px solid #4f51c0;{% elif plan.name == 'standard' %}background: #22c55e; color: #fff; border: 2px solid #a3e635;{% else %}background: #fbbf24; color: #22223b; border: 2px solid #f59e42;{% endif %}">
+          <div class="card-body d-flex flex-column h-100"{% if plan.name == 'premium' %} style="padding-bottom: 5.5rem;"{% endif %}>
+            <h4 class="fw-bold mb-2">
+              {% if plan.name == 'basic' %}<i class="fas fa-gem me-2"></i>{% elif plan.name == 'standard' %}<i class="fas fa-star me-2"></i>{% else %}<i class="fas fa-crown me-2"></i>{% endif %}
+              {{ plan.get_name_display }}
+            </h4>
+            <p class="small text-info mb-3">{{ plan.description|default:'Perfect for getting started' }}</p>
+            <h2 class="fw-bold mb-1">₹{{ plan.price }}</h2>
+            <p class="mb-3">for {{ plan.duration_days }} days</p>
+            <ul class="list-unstyled mb-4 text-start mx-auto" style="max-width: 220px; min-height: 200px;">
+              {% for feature in plan.features.splitlines %}
+                <li><i class="fas fa-check-circle text-success me-2"></i>{{ feature }}</li>
+              {% endfor %}
+            </ul>
+            {% if plan.name != 'premium' %}
+            <div class="mt-auto">
+              <a href="{% url 'accounts:purchase_plan' plan.id %}" class="btn btn-outline-light w-100 fw-bold">Choose {{ plan.get_name_display }}</a>
+            </div>
+            {% endif %}
+          </div>
+          {% if plan.name == 'premium' %}
+          <div class="premium-bottom-btn">
+            <a href="{% url 'accounts:purchase_plan' plan.id %}" class="btn btn-outline-light w-100 fw-bold">Choose {{ plan.get_name_display }}</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% if user_subscription %}
+      <div class="alert alert-success text-center mt-4">
+        <i class="fas fa-check-circle me-2"></i>You currently have an active <strong>{{ user_subscription.plan.get_name_display }}</strong> plan.
+        {% if user_subscription.end_date %}
+          <span class="ms-2">(expires {{ user_subscription.end_date|date:"M d, Y" }})</span>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %} 

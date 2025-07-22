@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - Business Directory{% endblock %}
+
+{% block content %}
+<div class="register-container">
+    <div class="register-background">
+        <div class="gradient-overlay"></div>
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+        </div>
+    </div>
+    <div class="container d-flex align-items-center justify-content-center">
+        <div class="register-card my-5">
+            <div class="card-header text-center mb-4">
+                <div class="logo-container mb-3">
+                    <i class="fas fa-user-plus fa-3x"></i>
+                </div>
+                <h2 class="fw-bold text-dark mb-2">Join Our Platform</h2>
+                <p class="text-muted mb-0">Create your business account</p>
+            </div>
+            <form method="POST" class="register-form">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="id_full_name" class="form-label fw-semibold">
+                            <i class="fas fa-user me-1"></i>Full Name
+                        </label>
+                        <input type="text" name="full_name" class="form-control form-control-lg" id="id_full_name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="id_mobile_number" class="form-label fw-semibold">
+                            <i class="fas fa-phone me-1"></i>Mobile Number
+                        </label>
+                        {{ form.mobile_number }}
+                        {% if form.mobile_number.errors %}
+                            <div class="text-danger small">{{ form.mobile_number.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="id_username" class="form-label fw-semibold">
+                        <i class="fas fa-user-tag me-1"></i>Username
+                    </label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <div class="text-danger small">{{ form.username.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="id_email" class="form-label fw-semibold">
+                        <i class="fas fa-envelope me-1"></i>Email Address
+                    </label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="text-danger small">{{ form.email.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="id_password1" class="form-label fw-semibold">
+                            <i class="fas fa-lock me-1"></i>Password
+                        </label>
+                        {{ form.password1 }}
+                        {% if form.password1.errors %}
+                            <div class="text-danger small">{{ form.password1.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="id_password2" class="form-label fw-semibold">
+                            <i class="fas fa-lock me-1"></i>Confirm Password
+                        </label>
+                        {{ form.password2 }}
+                        {% if form.password2.errors %}
+                            <div class="text-danger small">{{ form.password2.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="form-check mb-3">
+                    {{ form.terms }}
+                    <label class="form-check-label" for="id_terms">
+                        I agree to the <a href="{% url 'business_listings:terms_and_conditions' %}" class="text-decoration-underline" target="_blank" rel="noopener">Terms & Conditions</a> and <a href="{% url 'business_listings:privacy_policy' %}" class="text-decoration-underline" target="_blank" rel="noopener">Privacy Policy</a>
+                    </label>
+                    {% if form.terms.errors %}
+                        <div class="text-danger small">{{ form.terms.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-gradient btn-lg register-btn">
+                        <i class="fas fa-user-plus me-2"></i>Create Account
+                    </button>
+                </div>
+            </form>
+            <div class="text-center mt-4">
+                <p class="mb-0 text-muted">Already have an account?
+                    <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary btn-sm ms-2">
+                        <i class="fas fa-sign-in-alt me-1"></i>Sign in here
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+.register-container {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.register-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #2563eb 0%, #10b981 100%);
+}
+
+.gradient-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(37, 99, 235, 0.8), rgba(16, 185, 129, 0.8));
+}
+
+.floating-shapes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.shape {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+    animation: float 7s ease-in-out infinite;
+}
+.shape-1 { width: 90px; height: 90px; top: 18%; left: 12%; animation-delay: 0s; }
+.shape-2 { width: 130px; height: 130px; top: 65%; right: 8%; animation-delay: 2s; }
+.shape-3 { width: 70px; height: 70px; top: 38%; right: 18%; animation-delay: 4s; }
+.shape-4 { width: 110px; height: 110px; bottom: 18%; left: 18%; animation-delay: 1s; }
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-24px) rotate(180deg); }
+}
+
+.register-card {
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(12px);
+    border-radius: 22px 22px 16px 16px;
+    padding: 2.5rem 2.2rem 2.2rem 2.2rem;
+    box-shadow: 0 20px 40px rgba(37, 99, 235, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    max-width: 500px;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+}
+
+.logo-container {
+    background: linear-gradient(135deg, #2563eb, #10b981);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    color: white;
+    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.18);
+}
+
+.form-control {
+    border: 2px solid #e9ecef;
+    border-radius: 14px;
+    padding: 14px 18px;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.95);
+    font-size: 1.08rem;
+}
+
+.form-control:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.18);
+    background: white;
+}
+
+.btn-gradient {
+    background: linear-gradient(135deg, #2563eb, #10b981);
+    border: none;
+    border-radius: 14px;
+    padding: 14px;
+    font-weight: 600;
+    color: #fff;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.10);
+}
+
+.btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(16, 185, 129, 0.13);
+    background: linear-gradient(135deg, #10b981, #2563eb);
+}
+
+.btn-outline-primary {
+    border-color: #2563eb;
+    color: #2563eb;
+    border-radius: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background: linear-gradient(135deg, #2563eb, #10b981);
+    border-color: transparent;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.card-header h2 {
+    color: #2563eb;
+}
+
+@media (max-width: 768px) {
+    .register-card {
+        margin: 1rem;
+        padding: 2rem 1rem;
+    }
+    .logo-container {
+        width: 60px;
+        height: 60px;
+    }
+    .logo-container i {
+        font-size: 2rem !important;
+    }
+}
+</style>
+{% endblock %} 

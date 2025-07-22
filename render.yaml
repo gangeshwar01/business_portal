@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: business-portal
+    env: python
+    buildCommand: rm -rf staticfiles && pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: python manage.py migrate && python manage.py createsu && gunicorn business-portal.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
+      - key: DJANGO_SETTINGS_MODULE
+        value: business_portal.settings
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: True
+      - key: ALLOWED_HOSTS
+        value: business-portal.onrender.com
+      - key: DATABASE_URL
+        fromDatabase:
+          name: business-portal-db
+          property: connectionString
+      - key: DJANGO_SUPERUSER_USERNAME
+        value: admin
+      - key: DJANGO_SUPERUSER_EMAIL
+        value: admin@example.com
+      - key: DJANGO_SUPERUSER_PASSWORD
+        value: admin
+    plan: free
+    disk:
+      name: business-portal-disk
+      mountPath: /opt/render/project/src/media
+      sizeGB: 1
+#
+Django superuser credentials for first-time setup:
+Username: admin
+Password: admin
+Email: admin@example.com
+
+databases:
+  - name: business-portal-db
+    databaseName: business_portal
+    user: business_portal_user
+    plan: free 

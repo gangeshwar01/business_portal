@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5" style="background: #181f2a; min-height: 100vh;">
+  <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-lg w-100" style="max-width: 500px; border-radius: 1rem; background: #232946; color: #fff;">
+      <div class="card-body p-5">
+        <div class="text-center mb-4">
+          <h2 class="fw-bold mb-2" style="color: #ffd700;">
+            {% if plan.name == 'basic' %}<i class="fas fa-gem me-2"></i>{% elif plan.name == 'standard' %}<i class="fas fa-star me-2"></i>{% else %}<i class="fas fa-crown me-2"></i>{% endif %}
+            {{ plan.get_name_display }} Plan
+          </h2>
+          <h3 class="fw-bold mb-1" style="color: #22c55e;">₹{{ plan.price }}</h3>
+          <p class="mb-2">for {{ plan.duration_days }} days</p>
+        </div>
+        <ul class="list-unstyled mb-4 text-start mx-auto" style="max-width: 350px;">
+          {% for feature in plan.features.splitlines %}
+            <li><i class="fas fa-check-circle text-success me-2"></i>{{ feature }}</li>
+          {% endfor %}
+        </ul>
+        <form method="post" enctype="multipart/form-data" autocomplete="off">
+          {% csrf_token %}
+          {% for field in form.visible_fields %}
+            <div class="mb-3">
+              <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+              {{ field }}
+              {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+              {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+            </div>
+          {% endfor %}
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+          {% endif %}
+          <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-success btn-lg fw-bold"><i class="fas fa-paper-plane me-2"></i>Submit Payment Proof</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %} 

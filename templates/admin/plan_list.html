@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if messages %}
+  <div class="container mt-4">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+<div class="container py-5">
+  <h2 class="mb-4 text-white">Manage Subscription Plans</h2>
+  <div class="mb-3 text-end">
+    <a href="{% url 'business_listings:admin_plan_add' %}" class="btn btn-success">+ Add Plan</a>
+  </div>
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table table-hover mb-0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Duration (days)</th>
+            <th>Active</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for plan in plans %}
+          <tr>
+            <td>{{ plan.get_name_display }}</td>
+            <td>₹{{ plan.price }}</td>
+            <td>{{ plan.duration_days }}</td>
+            <td>{% if plan.is_active %}<span class="badge bg-success">Yes</span>{% else %}<span class="badge bg-danger">No</span>{% endif %}</td>
+            <td>
+              <a href="{% url 'business_listings:admin_plan_edit' plan.id %}" class="btn btn-sm btn-primary">Edit</a>
+              <a href="{% url 'business_listings:admin_plan_delete' plan.id %}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="5" class="text-center">No plans found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %} 

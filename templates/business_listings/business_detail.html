@@ -1,0 +1,387 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ business.name }} - Business Directory{% endblock %}
+
+{% block content %}
+<style>
+  body, .business-detail-bg {
+    background: #181f2a !important;
+    color: #fff !important;
+  }
+  .business-dark-card {
+    background: #232946 !important;
+    color: #fff !important;
+    border: 1px solid #2d2e83;
+    border-radius: 1rem;
+    box-shadow: 0 4px 24px 0 rgba(0,0,0,0.12);
+  }
+  .business-dark-card-header {
+    background: #232946 !important;
+    color: #ffd700 !important;
+    border-bottom: 1px solid #2d2e83;
+    font-weight: bold;
+  }
+  .business-dark-accent {
+    background: #22c55e !important;
+    color: #fff !important;
+  }
+  .business-dark-warning {
+    background: #fbbf24 !important;
+    color: #22223b !important;
+  }
+  .business-dark-link { color: #ffd700 !important; }
+  .business-dark-muted { color: #a3e635 !important; }
+</style>
+<div class="business-detail-bg">
+{% if messages %}
+  <div class="mb-4">
+    {% for message in messages %}
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+{% if business.status != 'active' %}
+  <div class="alert alert-warning mb-3">
+    <strong>Status:</strong> {{ business.status|title }}
+    {% if admin_review %}<br><strong>Admin Review:</strong> {{ admin_review }}{% endif %}
+  </div>
+{% endif %}
+<!-- Business Header -->
+<section class="py-5 bg-muted">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'business_listings:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'business_listings:business_list' %}">Businesses</a></li>
+                {% if business.category %}
+                <li class="breadcrumb-item"><a href="{% url 'business_listings:category_detail' business.category.id %}">{{ business.category.name }}</a></li>
+                {% endif %}
+                <li class="breadcrumb-item active text-white" aria-current="page">{{ business.name }}</li>
+            </ol>
+        </nav>
+        
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-center mb-3">
+                    {% if business.logo %}
+                        <img src="{{ business.logo.url }}" alt="{{ business.name }}" class="me-3" style="width: 80px; height: 80px; object-fit: cover; border-radius: 10px;">
+                    {% endif %}
+                    <div>
+                        <h1 class="fw-bold mb-1">{{ business.name }}</h1>
+                        <p class="text-white mb-2">
+                            {% if business.category %}
+                            <i class="fas fa-tag me-1"></i>{{ business.category.name }}
+                            {% endif %}
+                            {% if business.is_featured %}
+                                <span class="badge bg-warning text-dark ms-2">
+                                    <i class="fas fa-star me-1"></i>Featured
+                                </span>
+                            {% endif %}
+                        </p>
+                        <div class="rating mb-2">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= business.rating %}
+                                    <i class="fas fa-star"></i>
+                                {% else %}
+                                    <i class="far fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                            <span class="ms-2 text-white">({{ business.total_reviews }} reviews)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <div class="d-flex gap-2 justify-content-lg-end">
+                    {% if user.is_authenticated %}
+                        {% if business.owner == user %}
+                            <a href="{% url 'business_listings:edit_business' business.id %}" class="btn btn-outline-primary">
+                                <i class="fas fa-edit me-2"></i>Edit
+                            </a>
+                        {% endif %}
+                        {% if user.is_staff %}
+                            <a href="{% url 'business_listings:add_review' business.id %}" class="btn btn-primary">
+                                <i class="fas fa-star me-2"></i>Write Review
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Business Content -->
+<section class="py-5" style="background: #181f2a;">
+    <div class="container">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <!-- Contact & Ownership Section -->
+                <div class="card mb-4 business-dark-card">
+                    <div class="card-header business-dark-card-header"><i class="fas fa-user-tie me-2 text-success"></i>Contact & Ownership</div>
+                    <div class="card-body">
+                        {% if business.owner_name %}<p><strong>Owner Name:</strong> {{ business.owner_name }}</p>{% endif %}
+                        {% if business.owner_email %}<p><strong>Email:</strong> {{ business.owner_email }}</p>{% endif %}
+                        {% if business.owner_area_code %}<p><strong>Area Code:</strong> {{ business.owner_area_code }}</p>{% endif %}
+                        {% if business.owner_phone_number %}<p><strong>Phone Number:</strong> {{ business.owner_phone_number }}</p>{% endif %}
+                        {% if business.owner_whatsapp_number %}<p><strong>WhatsApp Number:</strong> {{ business.owner_whatsapp_number }}</p>{% endif %}
+                        {% if business.owner_alternate_phone_number %}<p><strong>Alternate Phone Number:</strong> {{ business.owner_alternate_phone_number }}</p>{% endif %}
+                    </div>
+                </div>
+                <!-- Basic Info Section -->
+                <div class="card mb-4 business-dark-card">
+                    <div class="card-header business-dark-card-header"><i class="fas fa-info-circle me-2 text-success"></i>Basic Information</div>
+                    <div class="card-body">
+                        {% if business.name %}<p><strong>Business Name:</strong> {{ business.name }}</p>{% endif %}
+                        {% if business.business_types %}<p><strong>Business Type:</strong> {{ business.business_types }}</p>{% endif %}
+                        {% if business.other_business_type %}<p><strong>Other Business Type:</strong> {{ business.other_business_type }}</p>{% endif %}
+                        {% if business.year_of_establishment %}<p><strong>Year of Establishment:</strong> {{ business.year_of_establishment }}</p>{% endif %}
+                        {% if business.google_business_profile %}<p><strong>Google Business Profile:</strong> <a href="{{ business.google_business_profile }}" target="_blank">{{ business.google_business_profile }}</a></p>{% endif %}
+                        {% if business.description %}<p><strong>Description:</strong> {{ business.description }}</p>{% endif %}
+                    </div>
+                </div>
+                <!-- Services & Category-Specific Section -->
+                <div class="card mb-4 business-dark-card">
+                    <div class="card-header business-dark-card-header"><i class="fas fa-concierge-bell me-2 text-success"></i>Services & Category-Specific</div>
+                            <div class="card-body">
+                        {% if business.available_services %}<p><strong>Available Services:</strong> {{ business.available_services }}</p>{% endif %}
+                        {% if business.available_services_other %}<p><strong>Other Services:</strong> {{ business.available_services_other }}</p>{% endif %}
+                        {% if business.category_specific_additions %}<p><strong>Category-Specific Additions:</strong> {{ business.category_specific_additions }}</p>{% endif %}
+                        {% if business.room_types_offered %}<p><strong>Room Types Offered:</strong> {{ business.room_types_offered }}</p>{% endif %}
+                        {% if business.total_number_of_rooms %}<p><strong>Total Number of Rooms:</strong> {{ business.total_number_of_rooms }}</p>{% endif %}
+                        {% if business.facilities %}<p><strong>Facilities:</strong> {{ business.facilities }}</p>{% endif %}
+                        {% if business.facilities_other %}<p><strong>Other Facility:</strong> {{ business.facilities_other }}</p>{% endif %}
+                        {% if business.cuisine_type %}<p><strong>Cuisine Type:</strong> {{ business.cuisine_type }}</p>{% endif %}
+                        {% if business.cuisine_type_other %}<p><strong>Other Cuisine Type:</strong> {{ business.cuisine_type_other }}</p>{% endif %}
+                        {% if business.seating_capacity %}<p><strong>Seating Capacity:</strong> {{ business.seating_capacity }}</p>{% endif %}
+                        {% if business.veg_nonveg %}<p><strong>Veg/Non-Veg:</strong> {{ business.veg_nonveg }}</p>{% endif %}
+                        {% if business.veg_nonveg_other %}<p><strong>Other Veg/Non-Veg Option:</strong> {{ business.veg_nonveg_other }}</p>{% endif %}
+                        {% if business.live_music_pet_friendly %}<p><strong>Live Music/Pet Friendly/Family Seating:</strong> {{ business.live_music_pet_friendly }}</p>{% endif %}
+                        {% if business.live_music_pet_friendly_other %}<p><strong>Other Live Music/Pet Friendly:</strong> {{ business.live_music_pet_friendly_other }}</p>{% endif %}
+                        {% if business.vehicle_types %}<p><strong>Vehicle Types:</strong> {{ business.vehicle_types }}</p>{% endif %}
+                        {% if business.vehicle_types_other %}<p><strong>Other Vehicle Type:</strong> {{ business.vehicle_types_other }}</p>{% endif %}
+                        {% if business.service_area_coverage %}<p><strong>Service Area Coverage:</strong> {{ business.service_area_coverage }}</p>{% endif %}
+                        {% if business.service_area_coverage_other %}<p><strong>Other Service Area Coverage:</strong> {{ business.service_area_coverage_other }}</p>{% endif %}
+                        {% if business.available_drivers %}<p><strong>Available Drivers:</strong> {{ business.available_drivers }}</p>{% endif %}
+                        {% if business.available_drivers_other %}<p><strong>Other Available Drivers:</strong> {{ business.available_drivers_other }}</p>{% endif %}
+                        {% if business.ac_nonac %}<p><strong>AC/Non-AC:</strong> {{ business.ac_nonac }}</p>{% endif %}
+                        {% if business.ac_nonac_other %}<p><strong>Other AC/Non-AC Option:</strong> {{ business.ac_nonac_other }}</p>{% endif %}
+                        {% if business.total_rides_activities %}<p><strong>Total Rides/Activities:</strong> {{ business.total_rides_activities }}</p>{% endif %}
+                        {% if business.entry_fee %}<p><strong>Entry Fee:</strong> {{ business.entry_fee }}</p>{% endif %}
+                        {% if business.safety_certification %}<p><strong>Safety Certification:</strong> {{ business.safety_certification }}</p>{% endif %}
+                        {% if business.changing_rooms_lockers %}<p><strong>Changing Rooms/Lockers:</strong> {{ business.changing_rooms_lockers }}</p>{% endif %}
+                        {% if business.package_types_offered %}<p><strong>Types of Packages Offered:</strong> {{ business.package_types_offered }}</p>{% endif %}
+                        {% if business.package_types_offered_other %}<p><strong>Other Package Type:</strong> {{ business.package_types_offered_other }}</p>{% endif %}
+                        {% if business.destinations_covered %}<p><strong>Destinations Covered:</strong> {{ business.destinations_covered }}</p>{% endif %}
+                        {% if business.price_range %}<p><strong>Price Range:</strong> {{ business.price_range }}</p>{% endif %}
+                        {% if business.transport_accommodation_included %}<p><strong>Transport & Accommodation Included:</strong> {{ business.transport_accommodation_included }}</p>{% endif %}
+                        {% if business.transport_accommodation_included_other %}<p><strong>Other Transport & Accommodation Option:</strong> {{ business.transport_accommodation_included_other }}</p>{% endif %}
+                        {% if business.customization_available %}<p><strong>Customization Available:</strong> {{ business.customization_available }}</p>{% endif %}
+                        {% if business.special_offers_discounts %}<p><strong>Special Offers/Discounts:</strong> {{ business.special_offers_discounts }}</p>{% endif %}
+                            </div>
+                        </div>
+                <!-- Location Section -->
+                <div class="card mb-4 business-dark-card">
+                    <div class="card-header business-dark-card-header"><i class="fas fa-map-marker-alt me-2 text-success"></i>Location</div>
+                    <div class="card-body">
+                        {% if business.address %}<p><strong>Address:</strong> {{ business.address }}</p>{% endif %}
+                        {% if business.city %}<p><strong>City:</strong> {{ business.city }}</p>{% endif %}
+                        {% if business.state %}<p><strong>State:</strong> {{ business.state }}</p>{% endif %}
+                        {% if business.zip_code %}<p><strong>ZIP Code:</strong> {{ business.zip_code }}</p>{% endif %}
+                        {% if business.country %}<p><strong>Country:</strong> {{ business.country }}</p>{% endif %}
+                        {% if business.phone %}<p><strong>Phone:</strong> {{ business.phone }}</p>{% endif %}
+                        {% if business.email %}<p><strong>Email:</strong> {{ business.email }}</p>{% endif %}
+                        {% if business.website %}<p><strong>Website:</strong> <a href="{{ business.website }}" target="_blank">{{ business.website }}</a></p>{% endif %}
+                        {% if business.hours_of_operation %}<p><strong>Hours of Operation:</strong> {{ business.hours_of_operation }}</p>{% endif %}
+                        {% if business.operating_days %}<p><strong>Operating Days:</strong> {{ business.operating_days }}</p>{% endif %}
+                        {% if business.services %}<p><strong>Services:</strong> {{ business.services }}</p>{% endif %}
+                    </div>
+                </div>
+                <!-- Media Section -->
+                <div class="card mb-4 business-dark-card">
+                    <div class="card-header business-dark-card-header"><i class="fas fa-images me-2 text-success"></i>Media</div>
+                            <div class="card-body">
+                        {% if business.logo %}
+                            <p><strong>Logo:</strong><br><img src="{{ business.logo.url }}" alt="Logo" style="max-width:120px;"></p>
+                        {% endif %}
+                        {% if business.cover_image %}
+                            <p><strong>Cover Image:</strong><br><img src="{{ business.cover_image.url }}" alt="Cover" style="max-width:300px;"></p>
+                                {% endif %}
+                            </div>
+                        </div>
+                <!-- Gallery Images Section -->
+                {% if business.images.all %}
+                <div class="card mb-4 business-dark-card">
+                    <div class="card-header business-dark-card-header"><i class="fas fa-images me-2 text-success"></i>Gallery Images</div>
+                    <div class="card-body">
+
+                        <div class="row g-3">
+                            {% for img in business.images.all %}
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <img src="{{ img.image.url }}" alt="Gallery Image" class="img-fluid rounded mb-2" style="max-height: 160px; object-fit: cover; width: 100%;">
+                                {% if img.caption %}<div class="small text-white text-center">{{ img.caption }}</div>{% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                <!-- Verification/Uploads Section -->
+                <div class="card mb-4 business-dark-card">
+                    <div class="card-header business-dark-card-header"><i class="fas fa-file-upload me-2 text-success"></i>Verification & Uploads</div>
+                    <div class="card-body">
+                        {% if business.menu_tariff_card %}<p><strong>Menu/Tariff Card:</strong> <a href="{{ business.menu_tariff_card.url }}" target="_blank">Download</a></p>{% endif %}
+                        {% if business.license_certification %}<p><strong>License/Certification:</strong> <a href="{{ business.license_certification.url }}" target="_blank">Download</a></p>{% endif %}
+                        {% if business.gst_certification %}<p><strong>GST Certification:</strong> <a href="{{ business.gst_certification.url }}" target="_blank">Download</a></p>{% endif %}
+                        {% if business.brochure_flyer %}<p><strong>Brochure/Flyer:</strong> <a href="{{ business.brochure_flyer.url }}" target="_blank">Download</a></p>{% endif %}
+                        {% if business.safety_certification_file %}<p><strong>Safety Certification File:</strong> <a href="{{ business.safety_certification_file.url }}" target="_blank">Download</a></p>{% endif %}
+                    </div>
+                </div>
+                <!-- Payment & Offers Section -->
+                <div class="card mb-4 business-dark-card">
+                    <div class="card-header business-dark-card-header"><i class="fas fa-credit-card me-2 text-success"></i>Payment & Offers</div>
+                    <div class="card-body">
+                        {% if business.payment_modes_accepted %}<p><strong>Payment Modes Accepted:</strong> {{ business.payment_modes_accepted }}</p>{% endif %}
+                        {% if business.payment_modes_accepted_other %}<p><strong>Other Payment Mode:</strong> {{ business.payment_modes_accepted_other }}</p>{% endif %}
+                        {% if business.ongoing_discounts %}<p><strong>Ongoing Discounts:</strong> {{ business.ongoing_discounts }}</p>{% endif %}
+                    </div>
+                </div>
+                <!-- Status/Admin Review Section -->
+                <div class="card mb-4 business-dark-card">
+                    <div class="card-header business-dark-card-header"><i class="fas fa-clipboard-check me-2 text-success"></i>Status & Admin Review</div>
+                    <div class="card-body">
+                        <p><strong>Status:</strong> {{ business.status|title }}</p>
+                        <p><strong>Admin Review:</strong> {{ business.admin_review }}</p>
+                        <p><strong>Created At:</strong> {{ business.created_at }}</p>
+                        <p><strong>Updated At:</strong> {{ business.updated_at }}</p>
+                    </div>
+                </div>
+                <!-- Reviews Section -->
+                {% if business.reviews.exists %}
+                <div class="card mb-4 business-dark-card">
+                  <div class="card-header business-dark-card-header"><i class="fas fa-star me-2 text-warning"></i>Reviews</div>
+                  <div class="card-body">
+                    {% for review in business.reviews.all %}
+                      <div class="mb-4 border-bottom pb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                          <span class="fw-bold">{{ review.user.get_full_name|default:review.user.username }}</span>
+                          <span class="text-white small">{{ review.created_at|date:'M d, Y' }}</span>
+                        </div>
+                        <div class="mb-1">
+                          {% for i in "12345" %}
+                            <i class="fas fa-star {% if forloop.counter <= review.rating %}text-warning{% else %}text-white{% endif %}"></i>
+                          {% endfor %}
+                        </div>
+                        <h6 class="mb-1">{{ review.title }}</h6>
+                        <p class="mb-1">{{ review.comment }}</p>
+                        {% if review.user.is_staff %}<span class="badge bg-info text-dark">Admin Review</span>{% endif %}
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Contact Information -->
+                <div class="card mb-4 business-dark-card">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-3 business-dark-muted">
+                            <i class="fas fa-phone me-2 text-success"></i>Contact Information
+                        </h5>
+                        <div class="mb-3">
+                            <strong>Phone:</strong><br>
+                            <a href="tel:{{ business.phone }}" class="text-decoration-none">{{ business.phone }}</a>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Email:</strong><br>
+                            <a href="mailto:{{ business.email }}" class="text-decoration-none">{{ business.email }}</a>
+                        </div>
+                        {% if business.website %}
+                        <div class="mb-3">
+                            <strong>Website:</strong><br>
+                            <a href="{{ business.website }}" target="_blank" class="text-decoration-none">{{ business.website }}</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Business Stats -->
+                <div class="card mb-4 business-dark-card">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-3 business-dark-muted">
+                            <i class="fas fa-chart-bar me-2 text-success"></i>Business Stats
+                        </h5>
+                        <div class="row text-center">
+                            <div class="col-6 mb-3">
+                                <div class="border-end">
+                                    <h4 class="fw-bold text-primary">{{ business.rating }}</h4>
+                                    <small class="text-white">Rating</small>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h4 class="fw-bold text-success">{{ business.total_reviews }}</h4>
+                                <small class="text-white">Reviews</small>
+                            </div>
+                            <div class="col-6">
+                                <h4 class="fw-bold text-info">{{ business.views }}</h4>
+                                <small class="text-white">Views</small>
+                            </div>
+                            <div class="col-6">
+                                <h4 class="fw-bold text-warning">{{ business.created_at|timesince }}</h4>
+                                <small class="text-white">Listed</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Business Owner -->
+                <div class="card mb-4 business-dark-card">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-3">
+                            <i class="fas fa-user me-2 text-primary"></i>Business Owner
+                        </h5>
+                        <p class="mb-2">
+                            <strong>{{ business.owner.first_name|default:business.owner.username }}</strong>
+                        </p>
+                        <p class="text-white mb-0">Member since {{ business.owner.date_joined|date:"M Y" }}</p>
+                    </div>
+                </div>
+
+                <!-- Related Businesses -->
+                {% if related_businesses %}
+                <div class="card business-dark-card">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-3">
+                            <i class="fas fa-building me-2 text-primary"></i>Related Businesses
+                        </h5>
+                        {% for related in related_businesses %}
+                        <div class="d-flex align-items-center mb-3">
+                            {% if related.logo %}
+                                <img src="{{ related.logo.url }}" alt="{{ related.name }}" class="me-3" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
+                            {% else %}
+                                <div class="bg-light me-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; border-radius: 5px;">
+                                    <i class="fas fa-building text-white"></i>
+                                </div>
+                            {% endif %}
+                            <div>
+                                <h6 class="mb-1">
+                                    <a href="{% url 'business_listings:business_detail' related.id %}" class="text-decoration-none">{{ related.name }}</a>
+                                </h6>
+                                <small class="text-white">{{ related.city }}, {{ related.state }}</small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

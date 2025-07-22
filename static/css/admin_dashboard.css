@@ -1,0 +1,64 @@
+/* Modern Admin Dashboard Theme */
+.admin-dashboard-bg {
+  background: linear-gradient(120deg, #232526 0%, #3f87a6 100%);
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+.card {
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 24px rgba(34,197,94,0.10);
+  border: none;
+  background: #565e6f;
+  color: #fff;
+  margin-bottom: 2rem;
+}
+.card-header {
+  background: #1e293b;
+  border-bottom: 1px solid #3f87a6;
+  font-weight: 600;
+  color: #a8ff78;
+}
+.btn-primary, .btn-outline-primary {
+  background: linear-gradient(90deg, #22c55e, #007cf0);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(34,197,94,0.08);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.btn-primary:hover, .btn-outline-primary:hover {
+  background: linear-gradient(90deg, #15803d, #007cf0);
+  color: #fff;
+}
+.btn-outline-secondary {
+  border: 2px solid #22c55e;
+  color: #22c55e;
+  background: transparent;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-outline-secondary:hover {
+  background: #22c55e;
+  color: #fff;
+}
+.table {
+  background: #232a3a;
+  color: #fff;
+}
+.table th, .table td {
+  border-color: #3f87a6;
+}
+.badge {
+  font-size: 1rem;
+  border-radius: 0.7em;
+  padding: 0.5em 1.2em;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(34,197,94,0.10);
+}
+.bg-primary { background: #007cf0 !important; }
+.bg-success { background: #22c55e !important; }
+.bg-warning { background: #fbbf24 !important; color: #22223b !important; }
+.bg-danger { background: #ef4444 !important; }
+.bg-info { background: #38bdf8 !important; color: #22223b !important; } 
