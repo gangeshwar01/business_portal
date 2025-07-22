@@ -6,19 +6,7 @@ import os
 import time
 from multiselectfield import MultiSelectField
 
-def business_image_path(instance, filename):
-    """Generate file path for business images"""
-    ext = filename.split('.')[-1]
-    if hasattr(instance, 'business'):
-        # For BusinessImage instances
-        business_name = instance.business.name if instance.business else 'unknown'
-        # Use timestamp to avoid conflicts when id is not available
-        timestamp = int(time.time() * 1000)
-        filename = f"{business_name}_{timestamp}.{ext}"
-    else:
-        # For Business instances (logo, cover_image)
-        filename = f"{instance.name}_{instance.id}.{ext}"
-    return os.path.join('business_images', filename)
+# Removed business_image_path function
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -69,8 +57,8 @@ class Business(models.Model):
     phone = models.CharField(max_length=20)
     email = models.EmailField()
     website = models.URLField(blank=True)
-    logo = models.FileField(upload_to=business_image_path, blank=True, null=True)
-    cover_image = models.FileField(upload_to=business_image_path, blank=True, null=True)
+    logo = models.FileField(upload_to='business_images/', blank=True, null=True)
+    cover_image = models.FileField(upload_to='business_images/', blank=True, null=True)
     hours_of_operation = models.TextField(blank=True)
     operating_days = models.CharField(
         max_length=100,
@@ -165,7 +153,7 @@ class Business(models.Model):
         blank=True,
         null=True
     )
-    safety_certification_file = models.FileField(upload_to='safety_certifications/', blank=True, null=True)
+    safety_certification_file = models.FileField(upload_to='verification_uploads/', blank=True, null=True)
     changing_rooms_lockers = models.CharField(
         max_length=3,
         choices=[('YES', 'YES'), ('NO', 'NO')],
@@ -376,7 +364,7 @@ class Contact(models.Model):
 
 class BusinessImage(models.Model):
     business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='images')
-    image = models.FileField(upload_to=business_image_path)
+    image = models.FileField(upload_to='business_images/')
     caption = models.CharField(max_length=200, blank=True)
     is_primary = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
