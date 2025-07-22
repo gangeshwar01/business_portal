@@ -67,7 +67,7 @@
             <div class="col-lg-8">
                 <div class="d-flex align-items-center mb-3">
                     {% if business.logo %}
-                        <img src="/static/business_images/{{ business.logo.name|basename }}" alt="{{ business.name }}" class="me-3" style="width: 80px; height: 80px; object-fit: cover; border-radius: 10px;">
+                        <img src="/static/{{ business.logo.name }}" alt="{{ business.name }}" class="me-3" style="width: 80px; height: 80px; object-fit: cover; border-radius: 10px;">
                     {% endif %}
                     <div>
                         <h1 class="fw-bold mb-1">{{ business.name }}</h1>
@@ -206,10 +206,10 @@
                     <div class="card-header business-dark-card-header"><i class="fas fa-images me-2 text-success"></i>Media</div>
                             <div class="card-body">
                         {% if business.logo %}
-                            <p><strong>Logo:</strong><br><img src="/static/business_images/{{ business.logo.name|basename }}" alt="Logo" style="max-width:120px;"></p>
+                            <p><strong>Logo:</strong><br><img src="/static/{{ business.logo.name }}" alt="Logo" style="max-width:120px;"></p>
                         {% endif %}
                         {% if business.cover_image %}
-                            <p><strong>Cover Image:</strong><br><img src="/static/business_images/{{ business.cover_image.name|basename }}" alt="Cover" style="max-width:300px;"></p>
+                            <p><strong>Cover Image:</strong><br><img src="/static/{{ business.cover_image.name }}" alt="Cover" style="max-width:300px;"></p>
                                 {% endif %}
                             </div>
                         </div>
@@ -222,7 +222,7 @@
                         <div class="row g-3">
                             {% for img in business.images.all %}
                             <div class="col-6 col-md-4 col-lg-3">
-                                <img src="/static/business_images/{{ img.image.name|basename }}" alt="Gallery Image" class="img-fluid rounded mb-2" style="max-height: 160px; object-fit: cover; width: 100%;">
+                                <img src="/static/{{ img.image.name }}" alt="Gallery Image" class="img-fluid rounded mb-2" style="max-height: 160px; object-fit: cover; width: 100%;">
                                 {% if img.caption %}<div class="small text-white text-center">{{ img.caption }}</div>{% endif %}
                             </div>
                             {% endfor %}
@@ -234,11 +234,11 @@
                 <div class="card mb-4 business-dark-card">
                     <div class="card-header business-dark-card-header"><i class="fas fa-file-upload me-2 text-success"></i>Verification & Uploads</div>
                     <div class="card-body">
-                        {% if business.menu_tariff_card %}<p><strong>Menu/Tariff Card:</strong> <a href="/static/verification_uploads/{{ business.menu_tariff_card.name|basename }}" target="_blank">Download</a></p>{% endif %}
-                        {% if business.license_certification %}<p><strong>License/Certification:</strong> <a href="/static/verification_uploads/{{ business.license_certification.name|basename }}" target="_blank">Download</a></p>{% endif %}
-                        {% if business.gst_certification %}<p><strong>GST Certification:</strong> <a href="/static/verification_uploads/{{ business.gst_certification.name|basename }}" target="_blank">Download</a></p>{% endif %}
-                        {% if business.brochure_flyer %}<p><strong>Brochure/Flyer:</strong> <a href="/static/verification_uploads/{{ business.brochure_flyer.name|basename }}" target="_blank">Download</a></p>{% endif %}
-                        {% if business.safety_certification_file %}<p><strong>Safety Certification File:</strong> <a href="/static/verification_uploads/{{ business.safety_certification_file.name|basename }}" target="_blank">Download</a></p>{% endif %}
+                        {% if business.menu_tariff_card %}<p><strong>Menu/Tariff Card:</strong> <a href="/static/{{ business.menu_tariff_card.name }}" target="_blank">Download</a></p>{% endif %}
+                        {% if business.license_certification %}<p><strong>License/Certification:</strong> <a href="/static/{{ business.license_certification.name }}" target="_blank">Download</a></p>{% endif %}
+                        {% if business.gst_certification %}<p><strong>GST Certification:</strong> <a href="/static/{{ business.gst_certification.name }}" target="_blank">Download</a></p>{% endif %}
+                        {% if business.brochure_flyer %}<p><strong>Brochure/Flyer:</strong> <a href="/static/{{ business.brochure_flyer.name }}" target="_blank">Download</a></p>{% endif %}
+                        {% if business.safety_certification_file %}<p><strong>Safety Certification File:</strong> <a href="/static/{{ business.safety_certification_file.name }}" target="_blank">Download</a></p>{% endif %}
                     </div>
                 </div>
                 <!-- Payment & Offers Section -->
