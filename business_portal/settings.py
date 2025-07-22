@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-your-secret-key-here')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost','https://business-portal-ftr1.onrender.com').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS','https://business-portal-ftr1.onrender.com').split(',')
 
 
 # Application definition
