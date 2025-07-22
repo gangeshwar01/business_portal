@@ -33,7 +33,6 @@ warnings.filterwarnings("ignore", message="Pillow could not be imported - fpdf2 
 
 def home(request):
     """Home page with featured businesses and categories"""
-    # Remove login requirement for home page
     from .forms import BusinessForm
     featured_businesses = Business.objects.filter(
         status='active', 
@@ -54,12 +53,21 @@ def home(request):
     
     plans = SubscriptionPlan.objects.filter(is_active=True).order_by('price')
 
-    # Add dynamic stats for home page
-    total_businesses = Business.objects.filter(status='active').count()
-    total_categories = len(BusinessForm.CATEGORY_SPECIFIC_CHOICES)
     admin_users = User.objects.filter(is_staff=True)
     from .models import Review
-    total_reviews = Review.objects.filter(user__in=admin_users).count()
+
+    if request.user.is_authenticated:
+        # Only show this user's approved businesses
+        total_businesses = Business.objects.filter(owner=request.user, status='active').count()
+        # Only show reviews made by admin users on this user's businesses
+        user_businesses = Business.objects.filter(owner=request.user)
+        total_reviews = Review.objects.filter(business__in=user_businesses, user__in=admin_users).count()
+    else:
+        # Site-wide stats (current logic)
+        total_businesses = Business.objects.filter(status='active').count()
+        total_reviews = Review.objects.filter(user__in=admin_users).count()
+
+    total_categories = len(BusinessForm.CATEGORY_SPECIFIC_CHOICES)
 
     context = {
         'featured_businesses': featured_businesses,
@@ -288,10 +296,15 @@ def contact(request):
 
 def about(request):
     """About page"""
-    total_businesses = Business.objects.filter(status='active').count()
     admin_users = User.objects.filter(is_staff=True)
-    from .models import Review
-    total_reviews = Review.objects.filter(user__in=admin_users).count()
+    from .models import Review, Business
+    if request.user.is_authenticated:
+        total_businesses = Business.objects.filter(owner=request.user, status='active').count()
+        user_businesses = Business.objects.filter(owner=request.user)
+        total_reviews = Review.objects.filter(business__in=user_businesses, user__in=admin_users).count()
+    else:
+        total_businesses = Business.objects.filter(status='active').count()
+        total_reviews = Review.objects.filter(user__in=admin_users).count()
     total_categories = Category.objects.count()
     
     context = {
