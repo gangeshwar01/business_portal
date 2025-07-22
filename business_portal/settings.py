@@ -140,8 +140,8 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Media files (user uploads)
 if os.getenv("RENDER", "False") == "True":
-    MEDIA_ROOT = BASE_DIR / 'static' / 'media'
-    MEDIA_URL = '/static/media/'
+    MEDIA_ROOT = BASE_DIR / 'static'
+    MEDIA_URL = '/static/'
 else:
     MEDIA_ROOT = BASE_DIR / 'media'
     MEDIA_URL = '/media/'
