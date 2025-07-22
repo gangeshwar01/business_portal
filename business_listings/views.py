@@ -33,6 +33,7 @@ warnings.filterwarnings("ignore", message="Pillow could not be imported - fpdf2 
 
 def home(request):
     """Home page with featured businesses and categories"""
+    from .models import Review, Business
     from .forms import BusinessForm
     featured_businesses = Business.objects.filter(
         status='active', 
@@ -54,8 +55,6 @@ def home(request):
     plans = SubscriptionPlan.objects.filter(is_active=True).order_by('price')
 
     admin_users = User.objects.filter(is_staff=True)
-    from .models import Review, Business
-
     if request.user.is_authenticated and request.user.is_staff:
         total_businesses = Business.objects.filter(status='active').count()
         total_reviews = Review.objects.filter(user__in=admin_users).count()
