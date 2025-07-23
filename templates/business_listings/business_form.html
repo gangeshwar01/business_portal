@@ -15,23 +15,21 @@
                         </div>
                         <button id="themeToggle" class="btn btn-outline-primary ms-3" type="button" title="Toggle Theme"><i class="fas fa-adjust"></i></button>
                     </div>
-                    <!-- Progress Bar INSIDE the card, below icons/title -->
-                    <div class="progressbar-wrapper mb-5" style="position:relative;">
-                        <div id="progressBarTrack" style="position:absolute; margin-top: 40px; height:4px; background:#eee; z-index:0; top:50%; width:100%;"></div>
-                        <div id="progressBarFill" style="position:absolute; margin-top: 40px; height:4px; background:#22c55e; z-index:1; top:50%; width:0;"></div>
-                        <ul class="progressbar d-flex list-unstyled mb-0" id="progressbar">
-                            <li class="progress-step d-flex flex-column align-items-center justify-content-center active" id="step-indicator-1"><i class="fas fa-user-tie"></i><span>Contact</span></li>
-                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-2"><i class="fas fa-info-circle"></i><span>Basic Info</span></li>
-                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-3"><i class="fas fa-concierge-bell"></i><span>Services</span></li>
-                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-4"><i class="fas fa-map-marker-alt"></i><span>Location</span></li>
-                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-5"><i class="fas fa-images"></i><span>Media</span></li>
-                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-6"><i class="fas fa-file-upload"></i><span>Verification</span></li>
-                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-7"><i class="fas fa-credit-card"></i><span>Payment</span></li>
-                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-8"><i class="fas fa-clipboard-check"></i><span>Declaration</span></li>
-                        </ul>
-                    </div>
                     <form id="businessForm" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                             {% csrf_token %}
+                        <!-- Modern Progress Bar -->
+                        <div class="progressbar-modern-container mb-5">
+                          <ol class="progressbar-modern">
+                            <li class="progressbar-step active"><span class="progressbar-icon"><i class="fas fa-user-tie"></i> 1</span><span class="progressbar-label">Contact</span></li>
+                            <li class="progressbar-step"><span class="progressbar-icon"><i class="fas fa-info-circle"></i> 2</span><span class="progressbar-label">Basic Info</span></li>
+                            <li class="progressbar-step"><span class="progressbar-icon"><i class="fas fa-concierge-bell"></i> 3</span><span class="progressbar-label">Services</span></li>
+                            <li class="progressbar-step"><span class="progressbar-icon"><i class="fas fa-map-marker-alt"></i> 4</span><span class="progressbar-label">Location</span></li>
+                            <li class="progressbar-step"><span class="progressbar-icon"><i class="fas fa-images"></i> 5</span><span class="progressbar-label">Media</span></li>
+                            <li class="progressbar-step"><span class="progressbar-icon"><i class="fas fa-file-upload"></i> 6</span><span class="progressbar-label">Verification</span></li>
+                            <li class="progressbar-step"><span class="progressbar-icon"><i class="fas fa-credit-card"></i> 7</span><span class="progressbar-label">Payment</span></li>
+                            <li class="progressbar-step"><span class="progressbar-icon"><i class="fas fa-clipboard-check"></i> 8</span><span class="progressbar-label">Declaration</span></li>
+                          </ol>
+                        </div>
                         <!-- Step 1: Contact & Ownership -->
                         <div class="form-step" id="step-1">
                             <h4 class="mb-4"><i class="fas fa-user-tie text-primary me-2"></i>Contact & Ownership Details</h4>
@@ -560,7 +558,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('themeToggle').addEventListener('click', function() {
         themeIndex = (themeIndex + 1) % themes.length;
         applyTheme(themeIndex);
-        updateProgressBar();
     });
 });
 
@@ -773,5 +770,52 @@ function setActiveStep(step) {
 // Example: Hook this to your step navigation logic
 // setActiveStep(currentStepNumber);
 // You should call setActiveStep(stepNumber) whenever the user moves to a new step.
+
+// DYNAMIC PROGRESS BAR HIGHLIGHTING
+function updateModernProgressBar(currentStep) {
+  const steps = document.querySelectorAll('.progressbar-modern .progressbar-step');
+  steps.forEach((step, idx) => {
+    step.classList.remove('active', 'completed');
+    if (idx < currentStep) {
+      step.classList.add('completed');
+    } else if (idx === currentStep) {
+      step.classList.add('active');
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  let currentStep = 0;
+  const formSteps = document.querySelectorAll('.form-step');
+  const nextBtns = document.querySelectorAll('.next-btn');
+  const backBtns = document.querySelectorAll('.back-btn');
+
+  function showStep(idx) {
+    formSteps.forEach((step, i) => {
+      step.style.display = (i === idx) ? '' : 'none';
+    });
+    updateModernProgressBar(idx);
+  }
+
+  nextBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      if (currentStep < formSteps.length - 1) {
+        currentStep++;
+        showStep(currentStep);
+      }
+    });
+  });
+  backBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    });
+  });
+
+  // Initial state
+  showStep(currentStep);
+});
 </script>
 {% endblock %} 
