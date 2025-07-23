@@ -288,9 +288,9 @@
             <div class="text-center py-5">
                 <i class="fas fa-search fa-4x text-muted mb-4"></i>
                 <h4>No businesses found</h4>
-                <p class="text-muted">Try adjusting your search criteria or browse all businesses.</p>
-                <a href="{% url 'business_listings:business_list' %}" class="btn btn-primary">
-                    <i class="fas fa-list me-2"></i>View All Businesses
+                <p class="text-muted">Try adjusting your search criteria or add new businesses.</p>
+                <a href="{% url 'business_listings:business_form' %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Add New Business
                 </a>
             </div>
         {% endif %}
