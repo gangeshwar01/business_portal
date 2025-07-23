@@ -16,19 +16,18 @@
                         <button id="themeToggle" class="btn btn-outline-primary ms-3" type="button" title="Toggle Theme"><i class="fas fa-adjust"></i></button>
                     </div>
                     <!-- Animated Progress Bar with Icons and Traveling Bar -->
-                    <div class="mb-5 position-relative" style="height: 60px;">
-                        <div class="progressbar-wrapper position-relative" style="overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none;">
-                            <ul class="progressbar d-flex justify-content-between list-unstyled mb-0" style="counter-reset: step; min-width: 600px;">
-                                <li class="progress-step" data-step="1"><i class="fas fa-user-tie"></i><span>Contact</span></li>
-                                <li class="progress-step" data-step="2"><i class="fas fa-info-circle"></i><span>Basic Info</span></li>
-                                <li class="progress-step" data-step="3"><i class="fas fa-concierge-bell"></i><span>Services</span></li>
-                                <li class="progress-step" data-step="4"><i class="fas fa-map-marker-alt"></i><span>Location</span></li>
-                                <li class="progress-step" data-step="5"><i class="fas fa-images"></i><span>Media</span></li>
-                                <li class="progress-step" data-step="6"><i class="fas fa-file-upload"></i><span>Verification</span></li>
-                                <li class="progress-step" data-step="7"><i class="fas fa-credit-card"></i><span>Payment</span></li>
-                                <li class="progress-step" data-step="8"><i class="fas fa-clipboard-check"></i><span>Declaration</span></li>
+                    <div class="mb-5" style="height: 60px;">
+                        <div class="progressbar-wrapper" style="overflow-x: auto; -webkit-overflow-scrolling: touch; height: 60px;">
+                            <ul class="progressbar d-flex list-unstyled mb-0" style="counter-reset: step; min-width: 700px; width: max-content; display: flex; align-items: center; height: 60px;">
+                                <li class="progress-step d-flex flex-column align-items-center justify-content-center" style="min-width: 80px;"><i class="fas fa-user-tie"></i><span>Contact</span></li>
+                                <li class="progress-step d-flex flex-column align-items-center justify-content-center" style="min-width: 80px;"><i class="fas fa-info-circle"></i><span>Basic Info</span></li>
+                                <li class="progress-step d-flex flex-column align-items-center justify-content-center" style="min-width: 80px;"><i class="fas fa-concierge-bell"></i><span>Services</span></li>
+                                <li class="progress-step d-flex flex-column align-items-center justify-content-center" style="min-width: 80px;"><i class="fas fa-map-marker-alt"></i><span>Location</span></li>
+                                <li class="progress-step d-flex flex-column align-items-center justify-content-center" style="min-width: 80px;"><i class="fas fa-images"></i><span>Media</span></li>
+                                <li class="progress-step d-flex flex-column align-items-center justify-content-center" style="min-width: 80px;"><i class="fas fa-file-upload"></i><span>Verification</span></li>
+                                <li class="progress-step d-flex flex-column align-items-center justify-content-center" style="min-width: 80px;"><i class="fas fa-credit-card"></i><span>Payment</span></li>
+                                <li class="progress-step d-flex flex-column align-items-center justify-content-center" style="min-width: 80px;"><i class="fas fa-clipboard-check"></i><span>Declaration</span></li>
                             </ul>
-                            <div class="progressbar-scroll-cue"></div>
                         </div>
                         <div id="progressBarTrack" class="progressbar-track position-absolute" style="height: 4px; top: 28px; left: 0; background: #e9ecef; border-radius: 2px; z-index: 0;"></div>
                         <div id="progressBarFill" class="progressbar-fill position-absolute" style="height: 4px; top: 28px; left: 0; background: #0d6efd; border-radius: 2px; z-index: 1; width: 0;"></div>
@@ -800,30 +799,31 @@ body.dark-mode .subtitle-text, .card.bg-dark .subtitle-text {
 .progressbar-wrapper {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  position: relative;
+  height: 60px;
 }
 .progressbar-wrapper::-webkit-scrollbar {
   display: none;
 }
-.progressbar-scroll-cue {
-  display: none;
+.progressbar {
+  display: flex;
+  min-width: 700px;
+  width: max-content;
+  align-items: center;
+  height: 60px;
+}
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 80px;
 }
 @media (max-width: 767.98px) {
-  .progressbar { min-width: 600px; width: max-content; }
-  .progress-step { min-width: 80px; display: inline-block; }
-  .progressbar-scroll-cue {
-    display: block;
-    position: absolute;
-    top: 0; right: 0; height: 100%; width: 32px;
-    pointer-events: none;
-    background: linear-gradient(to left, #181a1b 80%, rgba(24,26,27,0));
-    z-index: 2;
-  }
+  .progressbar { min-width: 700px; width: max-content; }
+  .progress-step { min-width: 80px; }
 }
 @media (max-width: 575.98px) {
-  .progressbar { min-width: 600px; width: max-content; }
+  .progressbar { min-width: 700px; width: max-content; }
   .progress-step { min-width: 60px; }
 }
 </style> 
