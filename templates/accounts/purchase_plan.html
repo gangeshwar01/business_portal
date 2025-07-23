@@ -27,6 +27,26 @@
               {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
             </div>
           {% endfor %}
+          <div id="dynamic-payment-info" class="mb-3" style="display:none;">
+            <div id="paytm-qr-section" style="display:none;">
+              {% if plan.paytm_qr %}
+                <label class="form-label">Paytm QR</label><br>
+                <img src="{{ plan.paytm_qr.url }}" alt="Paytm QR" style="max-width:180px; border-radius:8px; margin-bottom:8px;">
+              {% endif %}
+            </div>
+            <div id="googlepay-qr-section" style="display:none;">
+              {% if plan.google_pay_qr %}
+                <label class="form-label">Google Pay QR</label><br>
+                <img src="{{ plan.google_pay_qr.url }}" alt="Google Pay QR" style="max-width:180px; border-radius:8px; margin-bottom:8px;">
+              {% endif %}
+            </div>
+            <div id="upi-id-section" style="display:none;">
+              {% if plan.upi_id %}
+                <label class="form-label">UPI ID</label><br>
+                <span class="badge bg-info text-dark" style="font-size:1.1em;">{{ plan.upi_id }}</span>
+              {% endif %}
+            </div>
+          </div>
           {% if form.non_field_errors %}
             <div class="alert alert-danger">{{ form.non_field_errors }}</div>
           {% endif %}
@@ -34,6 +54,37 @@
             <button type="submit" class="btn btn-success btn-lg fw-bold"><i class="fas fa-paper-plane me-2"></i>Submit Payment Proof</button>
           </div>
         </form>
+        <script>
+          // Show/hide QR/UPI info based on payment method
+          function updatePaymentInfo() {
+            var paytm = document.getElementById('id_payment_method_0');
+            var googlepay = document.getElementById('id_payment_method_1');
+            var upi = document.getElementById('id_payment_method_2');
+            var paytmQR = document.getElementById('paytm-qr-section');
+            var googleQR = document.getElementById('googlepay-qr-section');
+            var upiID = document.getElementById('upi-id-section');
+            var dyn = document.getElementById('dynamic-payment-info');
+            paytmQR.style.display = googleQR.style.display = upiID.style.display = 'none';
+            dyn.style.display = 'none';
+            if (paytm && paytm.checked) {
+              paytmQR && (paytmQR.style.display = 'block');
+              dyn.style.display = 'block';
+            } else if (googlepay && googlepay.checked) {
+              googleQR && (googleQR.style.display = 'block');
+              dyn.style.display = 'block';
+            } else if (upi && upi.checked) {
+              upiID && (upiID.style.display = 'block');
+              dyn.style.display = 'block';
+            }
+          }
+          document.addEventListener('DOMContentLoaded', function() {
+            var radios = document.querySelectorAll('input[name="payment_method"]');
+            radios.forEach(function(radio) {
+              radio.addEventListener('change', updatePaymentInfo);
+            });
+            updatePaymentInfo();
+          });
+        </script>
       </div>
     </div>
   </div>

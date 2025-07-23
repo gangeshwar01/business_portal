@@ -48,6 +48,9 @@ class SubscriptionPlan(models.Model):
     badge_color = models.CharField(max_length=20, default='#888')
     badge_icon = models.CharField(max_length=50, blank=True, help_text='FontAwesome icon class')
     is_active = models.BooleanField(default=True)
+    paytm_qr = models.FileField(upload_to='plan_qr_codes/', blank=True, null=True)
+    google_pay_qr = models.FileField(upload_to='plan_qr_codes/', blank=True, null=True)
+    upi_id = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.get_name_display()

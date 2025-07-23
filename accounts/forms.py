@@ -46,4 +46,4 @@ class SubscriptionPlanForm(forms.ModelForm):
         self.fields['description'].widget.attrs.update({'rows': 2, 'class': 'form-control'})
     class Meta:
         model = SubscriptionPlan
-        fields = ['name', 'price', 'duration_days', 'description', 'features', 'badge_color', 'is_active'] 
+        fields = ['name', 'price', 'duration_days', 'description', 'features', 'badge_color', 'is_active', 'paytm_qr', 'google_pay_qr', 'upi_id'] 
