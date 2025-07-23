@@ -11,6 +11,7 @@ class SubscriptionPlanAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'duration_days', 'is_active')
     list_filter = ('is_active',)
     search_fields = ('name',)
+    fields = ('name', 'price', 'duration_days', 'badge_color', 'is_active', 'description', 'features', 'paytm_qr', 'google_pay_qr', 'upi_id')
 
 @admin.register(UserSubscription)
 class UserSubscriptionAdmin(admin.ModelAdmin):
