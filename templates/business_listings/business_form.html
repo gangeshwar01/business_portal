@@ -17,15 +17,15 @@
                     </div>
                     <!-- Progress Bar INSIDE the card, below icons/title -->
                     <div class="progressbar-wrapper mb-5" style="width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;">
-                        <ul class="progressbar d-flex list-unstyled mb-0" style="counter-reset: step; width: max-content; align-items: center; height: 60px;">
-                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" style="min-width: 70px;"><i class="fas fa-user-tie"></i><span>Contact</span></li>
-                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" style="min-width: 70px;"><i class="fas fa-info-circle"></i><span>Basic Info</span></li>
-                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" style="min-width: 70px;"><i class="fas fa-concierge-bell"></i><span>Services</span></li>
-                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" style="min-width: 70px;"><i class="fas fa-map-marker-alt"></i><span>Location</span></li>
-                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" style="min-width: 70px;"><i class="fas fa-images"></i><span>Media</span></li>
-                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" style="min-width: 70px;"><i class="fas fa-file-upload"></i><span>Verification</span></li>
-                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" style="min-width: 70px;"><i class="fas fa-credit-card"></i><span>Payment</span></li>
-                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" style="min-width: 70px;"><i class="fas fa-clipboard-check"></i><span>Declaration</span></li>
+                        <ul class="progressbar d-flex list-unstyled mb-0" id="progressbar" style="counter-reset: step; width: max-content; align-items: center; height: 60px;">
+                            <li class="progress-step d-flex flex-column align-items-center justify-content-center active" id="step-indicator-1" style="min-width: 70px;"><i class="fas fa-user-tie"></i><span>Contact</span></li>
+                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-2" style="min-width: 70px;"><i class="fas fa-info-circle"></i><span>Basic Info</span></li>
+                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-3" style="min-width: 70px;"><i class="fas fa-concierge-bell"></i><span>Services</span></li>
+                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-4" style="min-width: 70px;"><i class="fas fa-map-marker-alt"></i><span>Location</span></li>
+                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-5" style="min-width: 70px;"><i class="fas fa-images"></i><span>Media</span></li>
+                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-6" style="min-width: 70px;"><i class="fas fa-file-upload"></i><span>Verification</span></li>
+                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-7" style="min-width: 70px;"><i class="fas fa-credit-card"></i><span>Payment</span></li>
+                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-8" style="min-width: 70px;"><i class="fas fa-clipboard-check"></i><span>Declaration</span></li>
                         </ul>
                     </div>
                     <form id="businessForm" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
@@ -619,6 +619,7 @@ function showStep(index, direction) {
 }
     document.addEventListener('DOMContentLoaded', function() {
     showStep(currentStep);
+    setActiveStep(currentStep+1);
     window.addEventListener('resize', updateProgressBar);
     document.querySelectorAll('.next-btn').forEach(btn => {
         btn.addEventListener('click', function() {
@@ -641,6 +642,7 @@ function showStep(index, direction) {
             if (currentStep < steps.length - 1) {
                 currentStep++;
                 showStep(currentStep, 'forward');
+                setActiveStep(currentStep+1);
                 if (steps[currentStep].id === 'step-3') {
                     initCategorySpecificJS();
                 }
@@ -652,6 +654,7 @@ function showStep(index, direction) {
             if (currentStep > 0) {
                 currentStep--;
                 showStep(currentStep, 'back');
+                setActiveStep(currentStep+1);
                 if (steps[currentStep].id === 'step-3') {
                     initCategorySpecificJS();
                 }
@@ -749,6 +752,25 @@ function showStep(index, direction) {
         initCategorySpecificJS();
         }
     });
+
+// Auto-scroll and highlight progress bar step
+function setActiveStep(step) {
+    for (let i = 1; i <= 8; i++) {
+        const el = document.getElementById('step-indicator-' + i);
+        if (el) {
+            if (i === step) {
+                el.classList.add('active');
+                // Scroll into view
+                el.scrollIntoView({behavior: 'smooth', inline: 'center', block: 'nearest'});
+            } else {
+                el.classList.remove('active');
+            }
+        }
+    }
+}
+// Example: Hook this to your step navigation logic
+// setActiveStep(currentStepNumber);
+// You should call setActiveStep(stepNumber) whenever the user moves to a new step.
 </script>
 {% endblock %} 
 

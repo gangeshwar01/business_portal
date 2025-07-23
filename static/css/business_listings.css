@@ -301,23 +301,43 @@ section.business-results-section {
 
 /* Progress Bar/Stepper Fixes */
 .progressbar-wrapper {
-  position: static !important;
-  background: transparent !important;
-  z-index: auto !important;
-  top: unset !important;
-  box-shadow: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .progressbar {
-  position: static !important;
-  background: transparent !important;
-  z-index: auto !important;
-  top: unset !important;
-  box-shadow: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+  width: max-content;
+  margin: 0 auto;
+  transition: gap 0.3s;
 }
 .progress-step {
-  background: none !important;
-  box-shadow: none !important;
-  position: static !important;
+  min-width: 90px !important;
+  margin: 0 12px;
+  font-size: 1.1em;
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+}
+.progress-step.active {
+  color: #22c55e;
+  font-weight: bold;
+  background: #fffbe6;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px #22c55e22;
+}
+@media (max-width: 991.98px) {
+  .progressbar {
+    gap: 24px;
+  }
+  .progress-step {
+    min-width: 70px !important;
+    margin: 0 6px;
+  }
 }
 @media (min-width: 992px) {
   .progressbar-wrapper {

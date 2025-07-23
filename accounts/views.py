@@ -402,7 +402,7 @@ def admin_plan_list(request):
 @staff_member_required
 def admin_plan_add(request):
     if request.method == 'POST':
-        form = SubscriptionPlanForm(request.POST)
+        form = SubscriptionPlanForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, 'Plan added successfully!')
@@ -418,7 +418,7 @@ def admin_plan_add(request):
 def admin_plan_edit(request, plan_id):
     plan = get_object_or_404(SubscriptionPlan, id=plan_id)
     if request.method == 'POST':
-        form = SubscriptionPlanForm(request.POST, instance=plan)
+        form = SubscriptionPlanForm(request.POST, request.FILES, instance=plan)
         if form.is_valid():
             form.save()
             return redirect('business_listings:admin_plan_list')
