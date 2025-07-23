@@ -354,6 +354,8 @@ def purchase_plan(request, plan_id):
             sub.plan = plan
             sub.status = 'pending'
             sub.save()
+            print(f"[DEBUG] Saved UserSubscription: {sub}", file=sys.stderr)
+            print(f"[DEBUG] payment_screenshot: {sub.payment_screenshot}", file=sys.stderr)
             
             # Determine notification message based on whether it's an upgrade or new subscription
             if is_upgrade:
@@ -379,6 +381,10 @@ def purchase_plan(request, plan_id):
             
             messages.success(request, 'Your payment proof has been submitted. Admin will verify and activate your plan soon.')
             return redirect(f"{reverse('accounts:choose_plan')}?success=true")
+        else:
+            print('[DEBUG] SubscriptionPurchaseForm invalid', file=sys.stderr)
+            print(form.errors, file=sys.stderr)
+            print('[DEBUG] FILES:', request.FILES, file=sys.stderr)
     else:
         form = SubscriptionPurchaseForm()
     return render(request, 'accounts/purchase_plan.html', {'plan': plan, 'form': form})

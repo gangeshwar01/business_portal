@@ -64,7 +64,7 @@ def home(request):
         total_reviews = Review.objects.filter(business__in=user_businesses, user__in=admin_users).count()
     else:
         total_businesses = Business.objects.filter(status='active').count()
-        total_reviews = Review.objects.filter(user__in=admin_users).count()
+    total_reviews = Review.objects.filter(user__in=admin_users).count()
 
     total_categories = len(BusinessForm.CATEGORY_SPECIFIC_CHOICES)
 
@@ -306,7 +306,7 @@ def about(request):
         total_reviews = Review.objects.filter(business__in=user_businesses, user__in=admin_users).count()
     else:
         total_businesses = Business.objects.filter(status='active').count()
-        total_reviews = Review.objects.filter(user__in=admin_users).count()
+    total_reviews = Review.objects.filter(user__in=admin_users).count()
     total_categories = Category.objects.count()
     
     context = {

@@ -17,16 +17,18 @@
                     </div>
                     <!-- Animated Progress Bar with Icons and Traveling Bar -->
                     <div class="mb-5 position-relative" style="height: 60px;">
-                        <ul class="progressbar d-flex justify-content-between list-unstyled position-absolute w-100 h-100 mb-0" style="counter-reset: step; top: 0; left: 0; right: 0;">
-                            <li class="progress-step" data-step="1"><i class="fas fa-user-tie"></i><span>Contact</span></li>
-                            <li class="progress-step" data-step="2"><i class="fas fa-info-circle"></i><span>Basic Info</span></li>
-                            <li class="progress-step" data-step="3"><i class="fas fa-concierge-bell"></i><span>Services</span></li>
-                            <li class="progress-step" data-step="4"><i class="fas fa-map-marker-alt"></i><span>Location</span></li>
-                            <li class="progress-step" data-step="5"><i class="fas fa-images"></i><span>Media</span></li>
-                            <li class="progress-step" data-step="6"><i class="fas fa-file-upload"></i><span>Verification</span></li>
-                            <li class="progress-step" data-step="7"><i class="fas fa-credit-card"></i><span>Payment</span></li>
-                            <li class="progress-step" data-step="8"><i class="fas fa-clipboard-check"></i><span>Declaration</span></li>
-                        </ul>
+                        <div class="progressbar-wrapper" style="overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none;">
+                            <ul class="progressbar d-flex justify-content-between list-unstyled position-absolute w-100 h-100 mb-0" style="counter-reset: step; top: 0; left: 0; right: 0; min-width: 600px;">
+                                <li class="progress-step" data-step="1"><i class="fas fa-user-tie"></i><span>Contact</span></li>
+                                <li class="progress-step" data-step="2"><i class="fas fa-info-circle"></i><span>Basic Info</span></li>
+                                <li class="progress-step" data-step="3"><i class="fas fa-concierge-bell"></i><span>Services</span></li>
+                                <li class="progress-step" data-step="4"><i class="fas fa-map-marker-alt"></i><span>Location</span></li>
+                                <li class="progress-step" data-step="5"><i class="fas fa-images"></i><span>Media</span></li>
+                                <li class="progress-step" data-step="6"><i class="fas fa-file-upload"></i><span>Verification</span></li>
+                                <li class="progress-step" data-step="7"><i class="fas fa-credit-card"></i><span>Payment</span></li>
+                                <li class="progress-step" data-step="8"><i class="fas fa-clipboard-check"></i><span>Declaration</span></li>
+                            </ul>
+                        </div>
                         <div id="progressBarTrack" class="progressbar-track position-absolute" style="height: 4px; top: 28px; left: 0; background: #e9ecef; border-radius: 2px; z-index: 0;"></div>
                         <div id="progressBarFill" class="progressbar-fill position-absolute" style="height: 4px; top: 28px; left: 0; background: #0d6efd; border-radius: 2px; z-index: 1; width: 0;"></div>
                     </div>
@@ -793,5 +795,22 @@ body { background: #f8f9fa; transition: background 0.3s; }
 }
 body.dark-mode .subtitle-text, .card.bg-dark .subtitle-text {
     color: #a5f308 !important;
+}
+.progressbar-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.progressbar-wrapper::-webkit-scrollbar {
+  display: none;
+}
+@media (max-width: 767.98px) {
+  .progressbar { min-width: 600px; width: max-content; }
+  .progress-step { min-width: 80px; display: inline-block; }
+}
+@media (max-width: 575.98px) {
+  .progressbar { min-width: 600px; width: max-content; }
+  .progress-step { min-width: 60px; }
 }
 </style> 
