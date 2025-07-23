@@ -378,13 +378,29 @@ section.business-results-section {
 @media (min-width: 992px) {
   .progressbar-wrapper {
     justify-content: center;
+    align-items: center;
     background: transparent !important;
     z-index: auto !important;
     top: unset !important;
     box-shadow: none !important;
+    width: 100%;
+    position: relative;
   }
   .progressbar {
-    gap: 40px;
+    gap: 80px;
+    margin: 0 auto;
+    width: 100%;
+    justify-content: center;
+  }
+  #progressBarTrack {
+    left: 0 !important;
+    width: 100% !important;
+    right: 0 !important;
+    margin: 0 auto;
+  }
+  #progressBarFill {
+    left: 0 !important;
+    right: 0 !important;
     margin: 0 auto;
   }
   .progress-step {
