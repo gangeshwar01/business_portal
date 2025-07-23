@@ -305,6 +305,11 @@ class BusinessForm(forms.ModelForm):
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         label='I agree to the terms and conditions'
     )
+    payment_screenshot = forms.FileField(
+        required=False,
+        widget=forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        label='Payment Screenshot'
+    )
 
     class Meta:
         model = Business
@@ -322,7 +327,7 @@ class BusinessForm(forms.ModelForm):
             'package_types_offered', 'package_types_offered_other', 'destinations_covered', 'price_range', 'transport_accommodation_included', 'transport_accommodation_included_other', 'customization_available', 'special_offers_discounts',
             'menu_tariff_card', 'license_certification', 'gst_certification', 'brochure_flyer',
             'payment_modes_accepted', 'payment_modes_accepted_other', 'ongoing_discounts',
-            'declaration_agreed'
+            'declaration_agreed', 'payment_screenshot'
         ]
         widgets = {
             'name': forms.TextInput(attrs={
@@ -422,7 +427,7 @@ class BusinessForm(forms.ModelForm):
             'payment_modes_accepted_other': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Please specify'}),
             'ongoing_discounts': forms.TextInput(attrs={'class': 'form-control'}),
             'declaration_agreed': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-
+            'payment_screenshot': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
     
     def clean_phone(self):

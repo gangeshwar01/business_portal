@@ -36,7 +36,7 @@ class Business(models.Model):
         ('Home Stay', 'Home Stay'),
         ('Dharamshala', 'Dharamshala'),
         ('Adventure', 'Adventure'),
-        ('ParkWater', 'ParkWater'),
+        ('Water Park', 'Water Park'),
         ('ParkTravel', 'ParkTravel'),
         ('Agency Tour Packages', 'Agency Tour Packages'),
         ('Guide Services', 'Guide Services'),
@@ -299,6 +299,9 @@ class Business(models.Model):
     
     # Other business type field
     other_business_type = models.CharField(max_length=100, blank=True, null=True)
+    
+    # Add or update payment screenshot field
+    payment_screenshot = models.FileField(upload_to='subscription_payments/', blank=True, null=True)
     
     class Meta:
         verbose_name_plural = "Businesses"

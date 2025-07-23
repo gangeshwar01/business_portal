@@ -240,19 +240,25 @@
     background-color: rgba(255, 193, 7, 0.1);
 }
 
-@media (max-width: 768px) {
-    .col-md-4.text-end {
-        text-align: left !important;
-        margin-top: 1rem;
-    }
-    
-    .table-responsive {
-        font-size: 0.875rem;
-    }
-    
-    .btn-group .btn {
-        padding: 0.25rem 0.5rem;
-    }
+@media (max-width: 991.98px) {
+    .container.py-5 { padding: 1rem 0 !important; }
+    .card { border-radius: 1rem; }
+    .btn, .btn-primary { font-size: 0.95rem; padding: 0.5rem 1rem; }
+}
+@media (max-width: 767.98px) {
+    .col-md-4.text-end { text-align: left !important; margin-top: 1rem; }
+    .table-responsive { font-size: 0.875rem; }
+    .btn-group .btn { padding: 0.25rem 0.5rem; }
+    .card { margin-bottom: 1rem; }
+    .row.mb-4 > .col-md-8, .row.mb-4 > .col-md-4 { flex: 0 0 100%; max-width: 100%; }
+    .row.mb-4 { flex-direction: column; }
+}
+@media (max-width: 575.98px) {
+    .container, .container.py-5 { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
+    .card { border-radius: 0.75rem; }
+    .form-label, label { font-size: 0.95rem; }
+    .btn, .btn-primary { font-size: 0.9rem; padding: 0.4rem 0.7rem; }
+    .table-responsive { font-size: 0.8rem; }
 }
 </style>
 {% endblock %} 

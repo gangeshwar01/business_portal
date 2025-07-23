@@ -239,6 +239,9 @@
                         {% if business.gst_certification %}<p><strong>GST Certification:</strong> <a href="/media/{{ business.gst_certification.name }}" target="_blank">Download</a></p>{% endif %}
                         {% if business.brochure_flyer %}<p><strong>Brochure/Flyer:</strong> <a href="/media/{{ business.brochure_flyer.name }}" target="_blank">Download</a></p>{% endif %}
                         {% if business.safety_certification_file %}<p><strong>Safety Certification File:</strong> <a href="/media/{{ business.safety_certification_file.name }}" target="_blank">Download</a></p>{% endif %}
+                        {% if business.payment_screenshot %}
+                            <p><strong>Payment Screenshot:</strong> <a href="/media/{{ business.payment_screenshot.name }}" target="_blank">Download</a></p>
+                        {% endif %}
                     </div>
                 </div>
                 <!-- Payment & Offers Section -->
