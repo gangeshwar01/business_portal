@@ -15,21 +15,23 @@
                         </div>
                         <button id="themeToggle" class="btn btn-outline-primary ms-3" type="button" title="Toggle Theme"><i class="fas fa-adjust"></i></button>
                     </div>
+                    <!-- Progress Bar INSIDE the card, below icons/title -->
+                    <div class="progressbar-wrapper mb-5" style="position:relative;">
+                        <div id="progressBarTrack" style="position:absolute; margin-top: 40px; height:4px; background:#eee; z-index:0; top:50%; width:100%;"></div>
+                        <div id="progressBarFill" style="position:absolute; margin-top: 40px; height:4px; background:#22c55e; z-index:1; top:50%; width:0;"></div>
+                        <ul class="progressbar d-flex list-unstyled mb-0" id="progressbar">
+                            <li class="progress-step d-flex flex-column align-items-center justify-content-center active" id="step-indicator-1"><i class="fas fa-user-tie"></i><span>Contact</span></li>
+                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-2"><i class="fas fa-info-circle"></i><span>Basic Info</span></li>
+                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-3"><i class="fas fa-concierge-bell"></i><span>Services</span></li>
+                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-4"><i class="fas fa-map-marker-alt"></i><span>Location</span></li>
+                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-5"><i class="fas fa-images"></i><span>Media</span></li>
+                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-6"><i class="fas fa-file-upload"></i><span>Verification</span></li>
+                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-7"><i class="fas fa-credit-card"></i><span>Payment</span></li>
+                            <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-8"><i class="fas fa-clipboard-check"></i><span>Declaration</span></li>
+                        </ul>
+                    </div>
                     <form id="businessForm" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                             {% csrf_token %}
-                        <!-- Modern Progress Bar -->
-                        <div class="progressbar-modern-container mb-5">
-                          <ol class="progressbar-modern">
-                            <li class="progressbar-step active"><span class="progressbar-icon"><i class="fas fa-user-tie"></i> 1</span><span class="progressbar-label">Contact</span></li>
-                            <li class="progressbar-step"><span class="progressbar-icon"><i class="fas fa-info-circle"></i> 2</span><span class="progressbar-label">Basic Info</span></li>
-                            <li class="progressbar-step"><span class="progressbar-icon"><i class="fas fa-concierge-bell"></i> 3</span><span class="progressbar-label">Services</span></li>
-                            <li class="progressbar-step"><span class="progressbar-icon"><i class="fas fa-map-marker-alt"></i> 4</span><span class="progressbar-label">Location</span></li>
-                            <li class="progressbar-step"><span class="progressbar-icon"><i class="fas fa-images"></i> 5</span><span class="progressbar-label">Media</span></li>
-                            <li class="progressbar-step"><span class="progressbar-icon"><i class="fas fa-file-upload"></i> 6</span><span class="progressbar-label">Verification</span></li>
-                            <li class="progressbar-step"><span class="progressbar-icon"><i class="fas fa-credit-card"></i> 7</span><span class="progressbar-label">Payment</span></li>
-                            <li class="progressbar-step"><span class="progressbar-icon"><i class="fas fa-clipboard-check"></i> 8</span><span class="progressbar-label">Declaration</span></li>
-                          </ol>
-                        </div>
                         <!-- Step 1: Contact & Ownership -->
                         <div class="form-step" id="step-1">
                             <h4 class="mb-4"><i class="fas fa-user-tie text-primary me-2"></i>Contact & Ownership Details</h4>
@@ -513,51 +515,263 @@
 
 {% block extra_js %}
 <script>
-// DYNAMIC PROGRESS BAR HIGHLIGHTING (only new logic)
-function updateModernProgressBar(currentStep) {
-  const steps = document.querySelectorAll('.progressbar-modern .progressbar-step');
-  steps.forEach((step, idx) => {
-    step.classList.remove('active', 'completed');
-    if (idx < currentStep) {
-      step.classList.add('completed');
-    } else if (idx === currentStep) {
-      step.classList.add('active');
+// THEME TOGGLE
+const themes = [
+    {
+        name: 'light',
+        card: 'card shadow-lg border-0 rounded-4',
+        body: '#f8f9fa', // Changed from bright green to subtle light gray
+        accent: '#0d6efd',
+        btn: 'btn-outline-primary',
+        icon: 'fa-adjust'
+    },
+    {
+        name: 'dark',
+        card: 'card bg-dark text-white shadow-lg border-0 rounded-4',
+        body: '#181a1b',
+        accent: '#ffc107',
+        btn: 'btn-outline-warning',
+        icon: 'fa-moon'
+    },
+    {
+        name: 'green',
+        card: 'card shadow-lg border-0 rounded-4',
+        body: '#e9fbe5',
+        accent: '#28a745',
+        btn: 'btn-outline-success',
+        icon: 'fa-leaf'
     }
-  });
+];
+let themeIndex = 1; // Set default to dark theme
+function applyTheme(idx) {
+    const t = themes[idx];
+    document.body.style.background = t.body;
+    document.getElementById('themeCard').className = t.card;
+    document.getElementById('themeToggle').className = 'btn ' + t.btn + ' ms-3';
+    document.getElementById('themeToggle').innerHTML = `<i class="fas ${t.icon}"></i>`;
+    document.getElementById('progressBarFill').style.background = t.accent;
+    document.querySelectorAll('.progress-step').forEach(el => {
+        el.style.setProperty('--bar-color', t.accent);
+        el.style.setProperty('--accent-color', t.accent);
+    });
 }
-
 document.addEventListener('DOMContentLoaded', function() {
-  let currentStep = 0;
-  const formSteps = document.querySelectorAll('.form-step');
-  const nextBtns = document.querySelectorAll('.next-btn');
-  const backBtns = document.querySelectorAll('.back-btn');
-
-  function showStep(idx) {
-    formSteps.forEach((step, i) => {
-      step.style.display = (i === idx) ? '' : 'none';
+    applyTheme(themeIndex);
+    document.getElementById('themeToggle').addEventListener('click', function() {
+        themeIndex = (themeIndex + 1) % themes.length;
+        applyTheme(themeIndex);
+        updateProgressBar();
     });
-    updateModernProgressBar(idx);
-  }
-
-  nextBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-      if (currentStep < formSteps.length - 1) {
-        currentStep++;
-        showStep(currentStep);
-      }
-    });
-  });
-  backBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-      if (currentStep > 0) {
-        currentStep--;
-        showStep(currentStep);
-      }
-    });
-  });
-
-  // Initial state
-  showStep(currentStep);
 });
+
+// MULTISTEP WIZARD WITH ANIMATIONS & VALIDATION
+let currentStep = 0;
+const steps = document.querySelectorAll('.form-step');
+const progressSteps = document.querySelectorAll('.progress-step');
+function updateProgressBar() {
+    const fill = document.getElementById('progressBarFill');
+    const track = document.getElementById('progressBarTrack');
+    const stepEls = document.querySelectorAll('.progress-step');
+    const accent = getComputedStyle(document.body).getPropertyValue('--accent-color') || '#0d6efd';
+    // Calculate fill width based on current step
+    const total = stepEls.length;
+    const active = Math.max(1, currentStep + 1);
+    const first = stepEls[0].getBoundingClientRect();
+    const last = stepEls[total-1].getBoundingClientRect();
+    const container = track.parentElement.getBoundingClientRect();
+    // Get left of first icon and right of current icon
+    const left = stepEls[0].offsetLeft + stepEls[0].offsetWidth/2;
+    const right = stepEls[active-1].offsetLeft + stepEls[active-1].offsetWidth/2;
+    fill.style.left = left + 'px';
+    fill.style.width = (right - left) + 'px';
+    fill.style.background = accent.trim() || '#0d6efd';
+    // Track full width
+    track.style.left = left + 'px';
+    track.style.width = (last.left + last.width/2 - (first.left + first.width/2)) + 'px';
+}
+function showStep(index, direction) {
+    steps.forEach((step, i) => {
+        if (i === index) {
+            step.style.display = '';
+            step.classList.remove('fadeOutLeft', 'fadeOutRight', 'fadeInLeft', 'fadeInRight');
+            step.classList.add(direction === 'back' ? 'fadeInLeft' : 'fadeInRight');
+        } else {
+            if (step.style.display !== 'none') {
+                step.classList.remove('fadeInLeft', 'fadeInRight');
+                step.classList.add(i < index ? 'fadeOutLeft' : 'fadeOutRight');
+                setTimeout(() => { step.style.display = 'none'; }, 400);
+            } else {
+                step.style.display = 'none';
+            }
+        }
+    });
+    progressSteps.forEach((step, i) => {
+        step.classList.toggle('active', i === index);
+        step.classList.toggle('completed', i < index);
+        step.style.color = (i === index || i < index) ? 'var(--accent-color, #0d6efd)' : '#bbb';
+        step.querySelector('i').style.color = (i === index || i < index) ? 'var(--accent-color, #0d6efd)' : '#bbb';
+        step.querySelector('span').style.color = (i === index || i < index) ? 'var(--accent-color, #0d6efd)' : '#bbb';
+        if (i === index) {
+            step.style.fontWeight = 'bold';
+        } else {
+            step.style.fontWeight = 'normal';
+        }
+    });
+    setTimeout(updateProgressBar, 10);
+}
+    document.addEventListener('DOMContentLoaded', function() {
+    showStep(currentStep);
+    setActiveStep(currentStep+1);
+    window.addEventListener('resize', updateProgressBar);
+    document.querySelectorAll('.next-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Per-step validation
+            const form = document.getElementById('businessForm');
+            const stepFields = steps[currentStep].querySelectorAll('input, select, textarea');
+            let valid = true;
+            stepFields.forEach(field => {
+                if (field.hasAttribute('required') && !field.value) {
+                    field.classList.add('is-invalid');
+                    valid = false;
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+            if (!valid) {
+                steps[currentStep].scrollIntoView({behavior: 'smooth'});
+                return;
+            }
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                showStep(currentStep, 'forward');
+                setActiveStep(currentStep+1);
+                if (steps[currentStep].id === 'step-3') {
+                    initCategorySpecificJS();
+                }
+            }
+        });
+    });
+    document.querySelectorAll('.back-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep(currentStep, 'back');
+                setActiveStep(currentStep+1);
+                if (steps[currentStep].id === 'step-3') {
+                    initCategorySpecificJS();
+                }
+            }
+        });
+    });
+    // Bootstrap validation on submit
+    document.getElementById('businessForm').addEventListener('submit', function(event) {
+        if (!this.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        this.classList.add('was-validated');
+    });
+    // Show/hide 'Other' input for checkboxes
+    function toggleOtherInput(checkboxName, inputId) {
+        const checkboxes = document.querySelectorAll(`input[name="${checkboxName}"]`);
+        const otherInput = document.getElementById(inputId);
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', function() {
+                if (Array.from(checkboxes).some(c => c.value === 'Other' && c.checked)) {
+                    otherInput.style.display = '';
+                } else {
+                    otherInput.style.display = 'none';
+                    otherInput.value = '';
+                }
+            });
+        });
+    }
+    // Show/hide 'Other' input for radios
+    function toggleOtherRadio(radioName, inputId) {
+        const radios = document.querySelectorAll(`input[name="${radioName}"]`);
+        const otherInput = document.getElementById(inputId);
+        radios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (document.querySelector(`input[name="${radioName}"][value="Other"]`).checked) {
+                    otherInput.style.display = '';
+                } else {
+                    otherInput.style.display = 'none';
+                    otherInput.value = '';
+                }
+            });
+        });
+    }
+    toggleOtherInput('package_types_offered', 'package_types_offered_other_input');
+    toggleOtherRadio('transport_accommodation_included', 'transport_accommodation_included_other_input');
+    toggleOtherInput('vehicle_types', 'vehicle_types_other_input');
+    toggleOtherInput('service_area_coverage', 'service_area_coverage_other_input');
+    toggleOtherRadio('available_drivers', 'available_drivers_other_input');
+    toggleOtherRadio('ac_nonac', 'ac_nonac_other_input');
+    toggleOtherInput('payment_modes_accepted', 'payment_modes_accepted_other_input');
+    toggleOtherInput('room_types_offered', 'room_types_offered_other_input');
+    toggleOtherInput('facilities', 'facilities_other_input');
+    toggleOtherInput('cuisine_type', 'cuisine_type_other_input');
+    toggleOtherInput('veg_nonveg', 'veg_nonveg_other_input');
+    toggleOtherInput('live_music_pet_friendly', 'live_music_pet_friendly_other_input');
+
+    function updateFileName(inputId, spanId) {
+        const input = document.getElementById(inputId);
+        const span = document.getElementById(spanId);
+        if (input && span) {
+            input.addEventListener('change', function() {
+                span.textContent = input.files.length ? input.files[0].name : 'No file chosen';
+            });
+        }
+    }
+    updateFileName('id_menu_tariff_card', 'menu_tariff_card_filename');
+    updateFileName('id_license_certification', 'license_certification_filename');
+    updateFileName('id_gst_certification', 'gst_certification_filename');
+    updateFileName('id_brochure_flyer', 'brochure_flyer_filename');
+
+    function initCategorySpecificJS() {
+        const dropdown = document.getElementById('id_category_specific_additions');
+        const hotelFields = document.getElementById('hotel-fields');
+        const restaurantFields = document.getElementById('restaurant-fields');
+        const cabFields = document.getElementById('cab-fields');
+        const waterParksFields = document.getElementById('water-parks-fields');
+        const travelFields = document.getElementById('travel-fields');
+        function updateFields() {
+            const value = dropdown.value;
+            hotelFields.style.display = (value === 'hotels') ? '' : 'none';
+            restaurantFields.style.display = (value === 'restaurants') ? '' : 'none';
+            cabFields.style.display = (value === 'cab') ? '' : 'none';
+            waterParksFields.style.display = (value === 'water_parks') ? '' : 'none';
+            travelFields.style.display = (value === 'travel') ? '' : 'none';
+        }
+        if (dropdown) {
+            dropdown.removeEventListener('change', updateFields);
+            dropdown.addEventListener('change', updateFields);
+            updateFields();
+        }
+    }
+    // Initialize on load if on Services step
+    if (steps[currentStep].id === 'step-3') {
+        initCategorySpecificJS();
+        }
+    });
+
+// Auto-scroll and highlight progress bar step
+function setActiveStep(step) {
+    for (let i = 1; i <= 8; i++) {
+        const el = document.getElementById('step-indicator-' + i);
+        if (el) {
+            if (i === step) {
+                el.classList.add('active');
+                // Scroll into view
+                el.scrollIntoView({behavior: 'smooth', inline: 'center', block: 'nearest'});
+            } else {
+                el.classList.remove('active');
+            }
+        }
+    }
+}
+// Example: Hook this to your step navigation logic
+// setActiveStep(currentStepNumber);
+// You should call setActiveStep(stepNumber) whenever the user moves to a new step.
 </script>
 {% endblock %} 
