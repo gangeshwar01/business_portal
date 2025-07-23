@@ -240,7 +240,12 @@
                         {% if business.brochure_flyer %}<p><strong>Brochure/Flyer:</strong> <a href="/media/{{ business.brochure_flyer.name }}" target="_blank">Download</a></p>{% endif %}
                         {% if business.safety_certification_file %}<p><strong>Safety Certification File:</strong> <a href="/media/{{ business.safety_certification_file.name }}" target="_blank">Download</a></p>{% endif %}
                         {% if business.payment_screenshot %}
-                            <p><strong>Payment Screenshot:</strong> <a href="/media/{{ business.payment_screenshot.name }}" target="_blank">Download</a></p>
+                            <p><strong>Payment Screenshot:</strong>
+                                {% if business.payment_screenshot.name|lower|endswith(".jpg") or business.payment_screenshot.name|lower|endswith(".jpeg") or business.payment_screenshot.name|lower|endswith(".png") or business.payment_screenshot.name|lower|endswith(".gif") %}
+                                    <img src="/media/{{ business.payment_screenshot.name }}" alt="Payment Screenshot" style="max-width: 220px; height: auto; display: block; margin-bottom: 0.5rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                                {% endif %}
+                                <a href="/media/{{ business.payment_screenshot.name }}" target="_blank">Download</a>
+                            </p>
                         {% endif %}
                     </div>
                 </div>

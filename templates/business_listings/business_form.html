@@ -775,7 +775,8 @@ body { background: #f8f9fa; transition: background 0.3s; }
   .container.py-5 { padding: 1rem 0 !important; }
   .card-body.p-5 { padding: 1rem !important; }
   .form-step { min-height: 0; }
-  .progressbar { font-size: 0.9rem; }
+  .progressbar { font-size: 0.9rem; overflow-x: auto; white-space: nowrap; flex-wrap: nowrap !important; }
+  .progress-step { min-width: 80px; display: inline-block; }
   .progress-step i { font-size: 1.1rem; }
   .progress-step span { font-size: 0.8rem; }
   .btn, .btn-primary, .btn-success, .btn-secondary { font-size: 0.95rem; padding: 0.5rem 1rem; }
@@ -787,6 +788,8 @@ body { background: #f8f9fa; transition: background 0.3s; }
   .form-label, label { font-size: 0.95rem; }
   .display-5 { font-size: 1.3rem; }
   .btn, .btn-primary, .btn-success, .btn-secondary { font-size: 0.9rem; padding: 0.4rem 0.7rem; }
+  .progressbar { font-size: 0.8rem; }
+  .progress-step { min-width: 60px; }
 }
 body.dark-mode .subtitle-text, .card.bg-dark .subtitle-text {
     color: #a5f308 !important;
