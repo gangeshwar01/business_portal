@@ -302,8 +302,8 @@ section.business-results-section {
 /* --- Progress Bar/Stepper Fixes --- */
 .progressbar-wrapper {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+  align-items: space-between;
   width: 100%;
   overflow-x: auto !important;
   -webkit-overflow-scrolling: touch;
