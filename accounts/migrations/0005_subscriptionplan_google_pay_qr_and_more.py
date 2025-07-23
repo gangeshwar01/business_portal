@@ -13,12 +13,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='subscriptionplan',
             name='google_pay_qr',
-            field=models.FileField(blank=True, null=True, upload_to='plan_qr_codes/'),
+            field=models.FileField(blank=True, null=True, upload_to='qr/'),
         ),
         migrations.AddField(
             model_name='subscriptionplan',
             name='paytm_qr',
-            field=models.FileField(blank=True, null=True, upload_to='plan_qr_codes/'),
+            field=models.FileField(blank=True, null=True, upload_to='qr/'),
         ),
         migrations.AddField(
             model_name='subscriptionplan',
