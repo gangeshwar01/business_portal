@@ -318,7 +318,7 @@ section.business-results-section {
   align-items: center;
   margin: 0;
   padding: 0;
-  gap: 0;
+  gap: 32px;
 }
 
 .progress-step {
@@ -334,6 +334,10 @@ section.business-results-section {
   background: none !important;
   box-shadow: none !important;
   font-weight: normal;
+}
+
+.progress-step:not(:last-child) {
+  margin-right: 16px;
 }
 
 .progress-step i {
@@ -358,13 +362,16 @@ section.business-results-section {
   }
   .progressbar {
     width: max-content !important;
-    gap: 8px !important;
+    gap: 12px !important;
   }
   .progress-step {
     min-width: 70px;
     flex: none;
     font-size: 0.85em;
     padding: 0 2px;
+  }
+  .progress-step:not(:last-child) {
+    margin-right: 8px;
   }
   #progressBarTrack, #progressBarFill {
     display: none !important;
