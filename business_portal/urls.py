@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+import os
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,8 +26,8 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
 ]
 
-# Serve media files during development
-if settings.DEBUG:
+# Serve media files during development and on Render
+if settings.DEBUG or os.getenv("RENDER", "False") == "True":
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'business_listings.views.custom_404_view'
