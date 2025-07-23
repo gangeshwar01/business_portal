@@ -94,6 +94,7 @@ def user_login(request):
                 return render(request, 'accounts/verify_2fa.html', {'email': user.email, 'login_flow': True})
             else:
                 login(request, user)
+                # Only set the success message here, not in the redirect target
                 messages.success(request, f'Welcome back, {user.first_name or user.username}!')
                 next_url = request.GET.get('next', 'business_listings:home')
                 return redirect(next_url)
@@ -130,6 +131,7 @@ def verify_2fa_login(request):
 def user_logout(request):
     """User logout view"""
     logout(request)
+    # Only set the success message here, not in the redirect target
     messages.success(request, 'You have been logged out successfully.')
     return redirect('business_listings:home')
 
