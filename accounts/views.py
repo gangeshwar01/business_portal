@@ -58,6 +58,7 @@ def register(request):
         else:
             print('[DEBUG] Registration form invalid', file=sys.stderr)
             print(form.errors, file=sys.stderr)
+            messages.error(request, 'Please correct the errors below.')
     else:
         form = UserRegistrationForm()
     

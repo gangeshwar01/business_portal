@@ -298,3 +298,45 @@ section.business-results-section {
   z-index: 10;
   overflow: visible;
 } 
+
+/* Progress Bar/Stepper Fixes */
+.progressbar-wrapper {
+  position: static !important;
+  background: transparent !important;
+  z-index: auto !important;
+  top: unset !important;
+  box-shadow: none !important;
+}
+.progressbar {
+  position: static !important;
+  background: transparent !important;
+  z-index: auto !important;
+  top: unset !important;
+  box-shadow: none !important;
+}
+.progress-step {
+  background: none !important;
+  box-shadow: none !important;
+  position: static !important;
+}
+@media (min-width: 992px) {
+  .progressbar-wrapper {
+    position: static !important;
+    background: transparent !important;
+    z-index: auto !important;
+    top: unset !important;
+    box-shadow: none !important;
+  }
+  .progressbar {
+    position: static !important;
+    background: transparent !important;
+    z-index: auto !important;
+    top: unset !important;
+    box-shadow: none !important;
+  }
+  .progress-step {
+    position: static !important;
+    background: none !important;
+    box-shadow: none !important;
+  }
+} 
