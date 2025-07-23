@@ -156,7 +156,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'noreply@example.com'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-HANDLER404 = 'business_listings.views.custom_404_view'
+# Remove or comment out the custom 404 handler
+# HANDLER404 = 'business_listings.views.custom_404_view'
 
 # Security settings
 if not DEBUG:
