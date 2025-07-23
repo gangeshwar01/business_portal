@@ -301,80 +301,53 @@ section.business-results-section {
 
 /* --- Progress Bar/Stepper Fixes --- */
 .progressbar-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: space-between;
   width: 100%;
-  overflow-x: auto !important;
-  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
   position: relative;
   background: transparent !important;
   box-shadow: none !important;
-}
-.progressbar {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 100px;
-  width: max-content;
-  margin: 0 auto;
-  transition: gap 0.3s;
 }
+
+.progressbar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+}
+
 .progress-step {
-  min-width: 120px;
+  flex: 1 1 0;
+  min-width: 0;
   text-align: center;
-  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   font-size: 1.1em;
-  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
-  position: static !important;
+  padding: 0 8px;
   background: none !important;
   box-shadow: none !important;
   font-weight: normal;
 }
-.progress-step.active {
-  color: #22c55e;
-  font-weight: bold;
-  background: #fffbe6;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px #22c55e22;
-}
+
 .progress-step i {
   font-size: 1.5em;
   margin-bottom: 0.35em;
   display: block;
 }
+
 .progress-step span {
   white-space: normal;
   word-break: break-word;
   display: block;
   font-size: 1em;
   margin-top: 0.1em;
-}
-@media (min-width: 992px) {
-  .progressbar-wrapper {
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    position: relative;
-  }
-  .progressbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    gap: 0;
-    margin: 0 auto;
-  }
-  .progress-step {
-    flex: 1 1 0;
-    min-width: 0;
-    text-align: center;
-    padding: 0 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
 }
 
 @media (max-width: 991.98px) {
@@ -384,57 +357,16 @@ section.business-results-section {
     justify-content: flex-start;
   }
   .progressbar {
-    display: flex;
-    gap: 8px !important;
     width: max-content !important;
-    margin: 0;
+    gap: 8px !important;
   }
   .progress-step {
     min-width: 70px;
+    flex: none;
     font-size: 0.85em;
     padding: 0 2px;
-    flex: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
   }
   #progressBarTrack, #progressBarFill {
     display: none !important;
-  }
-}
-@media (min-width: 992px) {
-  .progressbar-wrapper {
-    justify-content: center;
-    align-items: center;
-    background: transparent !important;
-    z-index: auto !important;
-    top: unset !important;
-    box-shadow: none !important;
-    width: 100%;
-    position: relative;
-  }
-  .progressbar {
-    gap: 80px;
-    margin: 0 auto;
-    width: 100%;
-    justify-content: center;
-  }
-  #progressBarTrack {
-    left: 0 !important;
-    width: 100% !important;
-    right: 0 !important;
-    margin: 0 auto;
-  }
-  #progressBarFill {
-    left: 0 !important;
-    right: 0 !important;
-    margin: 0 auto;
-  }
-  .progress-step {
-    position: static !important;
-    background: none !important;
-    box-shadow: none !important;
-    font-weight: normal;
   }
 } 
