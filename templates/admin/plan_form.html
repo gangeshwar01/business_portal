@@ -8,7 +8,7 @@
         <div id="icon-preview" style="font-size: 2.5rem; margin-bottom: 0.5rem;"></div>
         <h3 class="fw-bold mb-0">{{ action }} Plan</h3>
       </div>
-      <form method="post" autocomplete="off">
+      <form method="post" enctype="multipart/form-data" autocomplete="off">
         {% csrf_token %}
         <div class="row">
           <div class="col-md-6 mb-3">

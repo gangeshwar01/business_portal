@@ -312,7 +312,7 @@ section.business-results-section {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 56px;
+  gap: 72px;
   width: max-content;
   margin: 0 auto;
   transition: gap 0.3s;
@@ -329,9 +329,19 @@ section.business-results-section {
   border-radius: 12px;
   box-shadow: 0 2px 12px #22c55e22;
 }
+.progress-step i {
+  font-size: 1.5em;
+  margin-bottom: 0.35em;
+  display: block;
+}
+.progress-step span {
+  margin-top: 0.1em;
+  display: block;
+  font-size: 1em;
+}
 @media (max-width: 991.98px) {
   .progressbar {
-    gap: 24px;
+    gap: 32px;
   }
   .progress-step {
     padding: 0 6px;
