@@ -390,3 +390,16 @@ section.business-results-section {
     margin-right: 32px;
   }
 } 
+
+@media (max-width: 767.98px) {
+  #progressbar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  #progressBarTrack {
+    margin-top: 70px;
+    width: 100%;
+    left: 0;
+  }
+} 
