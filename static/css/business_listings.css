@@ -377,3 +377,16 @@ section.business-results-section {
     display: none !important;
   }
 } 
+
+@media (min-width: 1900px) {
+  .progressbar {
+    gap: 64px;
+  }
+  .progress-step {
+    font-size: 1.3em;
+    min-width: 140px;
+  }
+  .progress-step:not(:last-child) {
+    margin-right: 32px;
+  }
+} 
