@@ -17,7 +17,7 @@ class UserSubscriptionAdmin(admin.ModelAdmin):
     list_display = ('user', 'plan', 'status', 'start_date', 'end_date', 'created_at')
     list_filter = ('status', 'plan')
     search_fields = ('user__username', 'plan__name', 'upi_reference')
-    readonly_fields = ('created_at', 'updated_at', 'payment_screenshot')
+    readonly_fields = ('created_at', 'updated_at')
     actions = ['activate_subscription', 'reject_subscription']
 
     def activate_subscription(self, request, queryset):
