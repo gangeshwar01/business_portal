@@ -391,14 +391,13 @@ section.business-results-section {
   }
 } 
 
-@media (max-width: 767.98px) {
+@media (max-width: 357.5px) {
   #progressbar {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
   }
   #progressBarTrack {
-    margin-top: 60px;
     width: 100%;
     left: 0;
   }

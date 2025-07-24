@@ -17,9 +17,9 @@
                     </div>
                     <!-- Progress Bar INSIDE the card, below icons/title -->
                     <div class="progressbar-wrapper mb-5" style="position:relative;">
-                        <div id="progressBarTrack" style="position:absolute; height:4px; background:#eee; z-index:0; top:50%;"></div>
-                        <div id="progressBarFill" style="position:absolute; margin-top: 60px; height:4px; background:#22c55e; z-index:1; top:50%; width:0;"></div>
-                        <ul class="progressbar d-flex list-unstyled mb-0" id="progressbar">
+                        <div id="progressBarTrack" style="position:absolute; height:4px; background:#eee; z-index:0; top:100%;width:100%;left:0;"></div>
+                        <div id="progressBarFill" style="position:absolute; top: 100%; height:4px; background:#22c55e; z-index:1; top:100%; width:0;"></div>
+                        <ul class="progressbar" id="progressbar" style="display:flex; flex-direction:row; flex-wrap:wrap;align-content: stretch;justify-content: space-evenly;align-items: center;">
                             <li class="progress-step d-flex flex-column align-items-center justify-content-center active" id="step-indicator-1"><i class="fas fa-user-tie"></i><span>Contact</span></li>
                             <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-2"><i class="fas fa-info-circle"></i><span>Basic Info</span></li>
                             <li class="progress-step d-flex flex-column align-items-center justify-content-center" id="step-indicator-3"><i class="fas fa-concierge-bell"></i><span>Services</span></li>
