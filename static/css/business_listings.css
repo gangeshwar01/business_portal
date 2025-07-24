@@ -409,15 +409,15 @@ section.business-results-section {
     flex-wrap: wrap;
   }
   #progressBarTrack {
-    width: 100%;
-    left: 0;
-    top: 100%;
+    width: 100% !important;
+    left: 0 !important;
+    top: 100% !important;
     position: absolute;
   }
   #progressBarFill {
-    top: 100%;
+    top: 100% !important;
     position: absolute;
-    left: 0;
-    width: 0px;
+    left: 0 !important;
+    width: 0px !important;
   }
 } 
