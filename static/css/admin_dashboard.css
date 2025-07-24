@@ -62,3 +62,101 @@
 .bg-warning { background: #fbbf24 !important; color: #22223b !important; }
 .bg-danger { background: #ef4444 !important; }
 .bg-info { background: #38bdf8 !important; color: #22223b !important; } 
+
+/* Responsive tweaks for notification section on mobile */
+@media (max-width: 576px) {
+  .admin-dashboard-bg .card-header {
+    font-size: 1rem !important;
+    padding: 0.5rem 0.8rem !important;
+  }
+  .admin-dashboard-bg .card-body {
+    padding: 0.7rem 0.8rem !important;
+  }
+  .admin-dashboard-bg .badge {
+    font-size: 0.8rem !important;
+    padding: 0.3em 0.7em !important;
+  }
+  .admin-dashboard-bg .list-group-item {
+    font-size: 0.95rem !important;
+    padding: 0.5rem 0.6rem !important;
+  }
+  .admin-dashboard-bg .btn, .admin-dashboard-bg .btn-sm {
+    font-size: 0.85rem !important;
+    padding: 0.2rem 0.5rem !important;
+  }
+  .admin-dashboard-bg .d-flex.align-items-center {
+    gap: 0.2rem !important;
+  }
+} 
+
+/* Responsive tweaks for plan_list.html on mobile */
+@media (max-width: 576px) {
+  .container.py-5 {
+    padding: 1.2rem 0.2rem !important;
+  }
+  .card-body, .card {
+    padding: 0.7rem 0.5rem !important;
+  }
+  .table th, .table td {
+    font-size: 0.95rem !important;
+    padding: 0.3rem 0.4rem !important;
+  }
+  .badge {
+    font-size: 0.8rem !important;
+    padding: 0.3em 0.7em !important;
+  }
+  .btn, .btn-sm {
+    font-size: 0.85rem !important;
+    padding: 0.2rem 0.5rem !important;
+    margin-bottom: 0.2rem !important;
+  }
+  .mb-3.text-end, .mb-4.text-white {
+    margin-bottom: 0.7rem !important;
+  }
+  .table {
+    min-width: 600px;
+    font-size: 0.95rem;
+  }
+  .table-responsive {
+    overflow-x: auto;
+  }
+} 
+
+/* Responsive tweaks for plan_form.html on mobile */
+@media (max-width: 576px) {
+  .container.py-5.d-flex.justify-content-center.align-items-center {
+    padding: 1.2rem 0.2rem !important;
+    flex-direction: column !important;
+  }
+  .card.shadow-lg.w-100 {
+    padding: 0.5rem !important;
+    max-width: 100% !important;
+  }
+  .card-body.p-5 {
+    padding: 1rem 0.5rem !important;
+  }
+  .form-label, label {
+    font-size: 0.95rem !important;
+  }
+  .form-control, textarea, select {
+    font-size: 0.95rem !important;
+    padding: 0.4rem 0.6rem !important;
+  }
+  .btn, .btn-lg, .btn-success, .btn-secondary {
+    font-size: 0.95rem !important;
+    padding: 0.5rem 0.7rem !important;
+  }
+  .d-grid.mt-4, .d-grid.mt-2 {
+    margin-top: 0.7rem !important;
+  }
+  .mb-3, .mb-4 {
+    margin-bottom: 0.7rem !important;
+  }
+  .text-center.mb-4 {
+    margin-bottom: 0.7rem !important;
+  }
+  #icon-preview {
+    font-size: 1.5rem !important;
+    margin-bottom: 0.3rem !important;
+  }
+} 

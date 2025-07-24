@@ -158,6 +158,36 @@
     vertical-align: middle;
 }
     </style>
+    <style>
+    /* Custom responsive navbar tweaks */
+    @media (max-width: 576px) {
+        .navbar-brand img {
+            height: 38px !important;
+            margin-right: 5px !important;
+        }
+        .navbar-brand {
+            font-size: 1.05rem !important;
+            margin-right: 0.2rem !important;
+        }
+        .navbar-nav .nav-link, .navbar-nav .dropdown-toggle {
+            font-size: 0.95rem !important;
+            padding-top: 0.3rem !important;
+            padding-bottom: 0.3rem !important;
+            padding-left: 0.6rem !important;
+            padding-right: 0.6rem !important;
+        }
+        .navbar-nav {
+            gap: 0.2rem !important;
+        }
+        .navbar-toggler {
+            padding: 0.2rem 0.5rem !important;
+            font-size: 1.1rem !important;
+        }
+        .navbar .dropdown-menu {
+            font-size: 0.95rem !important;
+        }
+    }
+    </style>
     
     {% block extra_css %}{% endblock %}
 </head>
