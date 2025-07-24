@@ -402,7 +402,7 @@ section.business-results-section {
     left: 0;
   }
 } 
-@media (min-width: 1024px) {
+@media (max-width: 1024px) {
   #progressbar {
     display: flex;
     flex-direction: row;
