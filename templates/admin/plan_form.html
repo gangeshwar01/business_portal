@@ -89,6 +89,17 @@ document.addEventListener('DOMContentLoaded', function() {
     nameField.addEventListener('change', updateIconPreview);
     updateIconPreview();
   }
+  function updateTextareaCols() {
+    var ta = document.getElementById('id_features');
+    if (!ta) return;
+    if (window.innerWidth <= 767.98) {
+      ta.setAttribute('cols', '37');
+    } else {
+      ta.setAttribute('cols', '40');
+    }
+  }
+  updateTextareaCols();
+  window.addEventListener('resize', updateTextareaCols);
 });
 </script>
 {% endblock %} 
