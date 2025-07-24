@@ -402,3 +402,22 @@ section.business-results-section {
     left: 0;
   }
 } 
+@media (min-width: 1024px) {
+  #progressbar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  #progressBarTrack {
+    width: 100%;
+    left: 0;
+    top: 100%;
+    position: absolute;
+  }
+  #progressBarFill {
+    top: 100%;
+    position: absolute;
+    left: 0;
+    width: 0px;
+  }
+} 
