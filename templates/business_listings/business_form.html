@@ -573,7 +573,6 @@ function updateProgressBar() {
     const track = document.getElementById('progressBarTrack');
     const stepEls = document.querySelectorAll('.progress-step');
     const accent = getComputedStyle(document.body).getPropertyValue('--accent-color') || '#0d6efd';
-    // Calculate fill width based on current step
     const total = stepEls.length;
     const active = Math.max(1, currentStep + 1);
     const first = stepEls[0].getBoundingClientRect();
@@ -586,8 +585,13 @@ function updateProgressBar() {
     fill.style.width = (right - left) + 'px';
     fill.style.background = accent.trim() || '#0d6efd';
     // Track full width
-    track.style.left = left + 'px';
-    track.style.width = (last.left + last.width/2 - (first.left + first.width/2)) + 'px';
+    if (window.innerWidth <= 1024) {
+        track.style.left = '0px';
+        track.style.width = track.parentElement.offsetWidth + 'px';
+    } else {
+        track.style.left = left + 'px';
+        track.style.width = (last.left + last.width/2 - (first.left + first.width/2)) + 'px';
+    }
 }
 function showStep(index, direction) {
     steps.forEach((step, i) => {
