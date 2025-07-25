@@ -338,6 +338,39 @@
       </div>
     </div>
 
+    <!-- Active Subscriptions Section -->
+    <div class="card mb-4">
+      <div class="card-header bg-light"><strong>Active Subscriptions</strong></div>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Plan</th>
+              <th>Validity (days)</th>
+              <th>Active Date</th>
+              <th>Expiry Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for sub in active_subscriptions %}
+            <tr>
+              <td>{{ sub.user.get_full_name|default:sub.user.username }}</td>
+              <td>{{ sub.user.email }}</td>
+              <td>{{ sub.plan.get_name_display }}</td>
+              <td>{{ sub.plan.duration_days }}</td>
+              <td>{% if sub.start_date %}{{ sub.start_date|date:'Y-m-d H:i' }}{% else %}-{% endif %}</td>
+              <td>{% if sub.end_date %}{{ sub.end_date|date:'Y-m-d H:i' }}{% else %}-{% endif %}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="text-center text-muted">No active subscriptions found.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- Business Change Requests Section -->
     <div class="row mt-4">
         <div class="col-12">

@@ -501,6 +501,9 @@ def admin_dashboard(request):
     # Recent contact messages for admin dashboard
     recent_contacts = Contact.objects.order_by('-created_at')[:10]
 
+    # All active subscriptions for admin dashboard
+    active_subscriptions = UserSubscription.objects.filter(status='active').select_related('user', 'plan').order_by('-end_date')
+
     context = {
         'total_businesses': total_businesses or 0,
         'pending_businesses': pending_businesses or 0,
@@ -515,6 +518,7 @@ def admin_dashboard(request):
         'pending_subscriptions': pending_subscriptions,
         'businesses': businesses,
         'recent_contacts': recent_contacts,
+        'active_subscriptions': active_subscriptions,
         'title': 'Admin Dashboard'
     }
     return render(request, 'admin/admin_dashboard.html', context)
@@ -545,10 +549,7 @@ def admin_reply_contact(request, contact_id):
                 user = User.objects.get(email=contact.email)
                 Notification.objects.create(
                     user=user,
-                    title="Admin Reply Received",
-                    message=f"Admin has replied to your message: '{contact.subject}'",
-                    notification_type="contact_reply",
-                    related_url=f"/my-contact-messages/"
+                    message=f"Admin has replied to your message: '{contact.subject}'"
                 )
             except User.DoesNotExist:
                 pass  # User might not be registered
