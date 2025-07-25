@@ -184,7 +184,6 @@ def add_business(request):
     # Check for active subscription
     active_subscription = UserSubscription.objects.filter(user=request.user, status='active').first()
     if not active_subscription:
-        from django.contrib import messages
         messages.error(request, 'You must have an active subscription plan to add a business. Please purchase a plan first.')
         return redirect('accounts:choose_plan')
     if request.method == 'POST':
@@ -227,7 +226,6 @@ def edit_business(request, business_id):
     """Edit an existing business listing"""
     business = get_object_or_404(Business, id=business_id, owner=request.user)
     if business.status in ['active', 'suspended']:
-        from django.contrib import messages
         messages.error(request, 'You cannot edit an approved or rejected business. Please use the contact form to request changes.')
         return redirect('business_listings:contact')
     if request.method == 'POST':
@@ -310,7 +308,6 @@ def contact(request):
                     related_url=f"/admin-dashboard/"
                 )
             
-            from django.contrib import messages
             if contact_obj.contact_type == 'business' or contact_obj.business:
                 messages.success(request, 'Your business change request has been sent. We will review and respond shortly.')
             else:
@@ -551,7 +548,6 @@ def admin_reply_contact(request, contact_id):
             except User.DoesNotExist:
                 pass  # User might not be registered
             
-            from django.contrib import messages
             messages.success(request, f'Reply sent to {contact.name}')
             
             return redirect('business_listings:admin_dashboard')
@@ -571,7 +567,6 @@ def admin_delete_contact(request, contact_id):
     contact = get_object_or_404(Contact, id=contact_id)
     contact.delete()
     
-    from django.contrib import messages
     messages.success(request, 'Contact message deleted successfully.')
     
     return redirect('business_listings:admin_dashboard')
