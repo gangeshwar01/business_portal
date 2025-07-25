@@ -302,10 +302,7 @@ def contact(request):
             for admin in admin_users:
                 Notification.objects.create(
                     user=admin,
-                    title="New Contact Message",
-                    message=f"New message from {contact_obj.name}: {contact_obj.subject}",
-                    notification_type="contact_message",
-                    related_url=f"/admin-dashboard/"
+                    message=f"New message from {contact_obj.name}: {contact_obj.subject}"
                 )
             
             if contact_obj.contact_type == 'business' or contact_obj.business:
