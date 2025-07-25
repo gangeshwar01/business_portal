@@ -160,3 +160,48 @@
     margin-bottom: 0.3rem !important;
   }
 } 
+
+/* Responsive tweaks for contact reply form on mobile */
+@media (max-width: 576px) {
+  .container.py-5 {
+    padding: 1rem 0.5rem !important;
+  }
+  .card.shadow-lg {
+    margin: 0.5rem !important;
+  }
+  .card-header.bg-primary h4 {
+    font-size: 1.2rem !important;
+  }
+  .card-body.p-4 {
+    padding: 1rem 0.8rem !important;
+  }
+  .card.bg-light .card-body {
+    padding: 0.8rem !important;
+  }
+  .card.bg-light .card-body p {
+    font-size: 0.9rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  .form-label {
+    font-size: 0.95rem !important;
+  }
+  textarea.form-control {
+    font-size: 0.95rem !important;
+    padding: 0.5rem !important;
+  }
+  .btn {
+    font-size: 0.9rem !important;
+    padding: 0.5rem 0.8rem !important;
+  }
+  .d-flex.justify-content-between {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+  .d-flex.justify-content-between .btn {
+    width: 100% !important;
+    margin-bottom: 0.3rem !important;
+  }
+  .mb-4 h6 {
+    font-size: 0.95rem !important;
+  }
+} 

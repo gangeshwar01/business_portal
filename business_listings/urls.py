@@ -42,4 +42,7 @@ urlpatterns += [
     path('admin-dashboard/plans/add/', account_views.admin_plan_add, name='admin_plan_add'),
     path('admin-dashboard/plans/<int:plan_id>/edit/', account_views.admin_plan_edit, name='admin_plan_edit'),
     path('admin-dashboard/plans/<int:plan_id>/delete/', account_views.admin_plan_delete, name='admin_plan_delete'),
+    path('admin/reply-contact/<int:contact_id>/', views.admin_reply_contact, name='admin_reply_contact'),
+    path('admin/delete-contact/<int:contact_id>/', views.admin_delete_contact, name='admin_delete_contact'),
+    path('my-contact-messages/', views.my_contact_messages, name='my_contact_messages'),
 ] 

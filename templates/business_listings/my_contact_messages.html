@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="mb-0">
+                    <i class="fas fa-envelope me-2"></i>
+                    My Contact Messages
+                </h2>
+                <a href="{% url 'business_listings:contact' %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Send New Message
+                </a>
+            </div>
+
+            <!-- Contact Messages -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-paper-plane me-2"></i>
+                        Messages Sent
+                        {% if user_contacts %}
+                            <span class="badge bg-light text-dark ms-2">{{ user_contacts|length }}</span>
+                        {% endif %}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if user_contacts %}
+                        <div class="list-group list-group-flush">
+                            {% for contact in user_contacts %}
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">
+                                            <i class="fas fa-envelope me-2 text-primary"></i>
+                                            {{ contact.subject }}
+                                            {% if contact.business %}
+                                                <span class="badge bg-info ms-2">{{ contact.business.name }}</span>
+                                            {% endif %}
+                                        </h6>
+                                        <p class="mb-2 text-muted">
+                                            <small>
+                                                <i class="fas fa-calendar me-1"></i>
+                                                {{ contact.created_at|date:"M d, Y H:i" }}
+                                                <span class="ms-3">
+                                                    <i class="fas fa-tag me-1"></i>
+                                                    {{ contact.get_contact_type_display }}
+                                                </span>
+                                            </small>
+                                        </p>
+                                        <div class="bg-light p-3 rounded">
+                                            <p class="mb-0">{{ contact.message }}</p>
+                                        </div>
+                                        {% if contact.replies.exists %}
+                                            <div class="mt-2">
+                                                <span class="badge bg-success">
+                                                    <i class="fas fa-reply me-1"></i>
+                                                    {{ contact.replies.count }} reply{{ contact.replies.count|pluralize }}
+                                                </span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted mb-0">No messages sent yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Admin Replies -->
+            {% if contact_replies %}
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-reply me-2"></i>
+                        Admin Replies
+                        <span class="badge bg-light text-dark ms-2">{{ contact_replies|length }}</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        {% for reply in contact_replies %}
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">
+                                        <i class="fas fa-user-shield me-2 text-success"></i>
+                                        Admin Reply to: {{ reply.contact.subject }}
+                                        {% if reply.contact.business %}
+                                            <span class="badge bg-info ms-2">{{ reply.contact.business.name }}</span>
+                                        {% endif %}
+                                    </h6>
+                                    <p class="mb-2 text-muted">
+                                        <small>
+                                            <i class="fas fa-calendar me-1"></i>
+                                            {{ reply.created_at|date:"M d, Y H:i" }}
+                                            <span class="ms-3">
+                                                <i class="fas fa-user me-1"></i>
+                                                {{ reply.admin.username }}
+                                            </span>
+                                        </small>
+                                    </p>
+                                    <div class="bg-success bg-opacity-10 p-3 rounded border border-success">
+                                        <p class="mb-0">{{ reply.message }}</p>
+                                    </div>
+                                    <div class="mt-2">
+                                        <small class="text-muted">
+                                            <strong>Your Original Message:</strong> {{ reply.contact.message|truncatechars:100 }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

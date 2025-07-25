@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-reply me-2"></i>
+                        Reply to Contact Message
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <!-- Original Message -->
+                    <div class="mb-4">
+                        <h6 class="text-muted mb-2">Original Message from {{ contact.name }}</h6>
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <p><strong>Subject:</strong> {{ contact.subject }}</p>
+                                <p><strong>Email:</strong> {{ contact.email }}</p>
+                                {% if contact.business %}
+                                    <p><strong>Business:</strong> {{ contact.business.name }}</p>
+                                {% endif %}
+                                <p><strong>Message:</strong></p>
+                                <p class="mb-0">{{ contact.message }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reply Form -->
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Your Reply</label>
+                            <textarea name="message" id="message" class="form-control" rows="6" 
+                                      placeholder="Type your reply here..." required></textarea>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'business_listings:admin_dashboard' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-2"></i>Send Reply
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

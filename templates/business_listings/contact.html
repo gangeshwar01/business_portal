@@ -63,6 +63,15 @@
                                     <div class="text-danger small">{{ form.contact_type.errors.0 }}</div>
                                 {% endif %}
                             </div>
+                            {% if form.business %}
+                            <div class="mb-3">
+                                <label for="{{ form.business.id_for_label }}" class="form-label">Related Business (if applicable)</label>
+                                {{ form.business }}
+                                {% if form.business.errors %}
+                                    <div class="text-danger small">{{ form.business.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            {% endif %}
                             
                             <div class="mb-4">
                                 <label for="{{ form.message.id_for_label }}" class="form-label">Message *</label>

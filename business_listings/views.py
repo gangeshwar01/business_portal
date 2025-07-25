@@ -181,6 +181,12 @@ def business_detail(request, business_id):
 @login_required
 def add_business(request):
     """Add a new business listing"""
+    # Check for active subscription
+    active_subscription = UserSubscription.objects.filter(user=request.user, status='active').first()
+    if not active_subscription:
+        from django.contrib import messages
+        messages.error(request, 'You must have an active subscription plan to add a business. Please purchase a plan first.')
+        return redirect('accounts:choose_plan')
     if request.method == 'POST':
         form = BusinessForm(request.POST, request.FILES)
         
@@ -220,6 +226,10 @@ def add_business(request):
 def edit_business(request, business_id):
     """Edit an existing business listing"""
     business = get_object_or_404(Business, id=business_id, owner=request.user)
+    if business.status in ['active', 'suspended']:
+        from django.contrib import messages
+        messages.error(request, 'You cannot edit an approved or rejected business. Please use the contact form to request changes.')
+        return redirect('business_listings:contact')
     if request.method == 'POST':
         form = BusinessForm(request.POST, request.FILES, instance=business)
         if form.is_valid():
@@ -272,20 +282,42 @@ def add_review(request, business_id):
 @login_required
 def contact(request):
     """Contact form"""
+    initial = {}
+    business_id = request.GET.get('business_id')
+    if business_id:
+        from .models import Business
+        try:
+            business = Business.objects.get(id=business_id, owner=request.user)
+            initial['business'] = business
+            initial['contact_type'] = 'business'
+            initial['subject'] = f'Request to update business: {business.name}'
+        except Business.DoesNotExist:
+            pass
+    
     if request.method == 'POST':
-        form = ContactForm(request.POST)
+        form = ContactForm(request.POST, user=request.user)
         if form.is_valid():
             contact_obj = form.save()
-            # Notify all admins
-            from django.contrib.auth.models import User
-            from accounts.models import Notification
+            
+            # Notify all admins about the contact message
             admin_users = User.objects.filter(is_staff=True)
             for admin in admin_users:
-                Notification.objects.create(user=admin, message=f'New contact message from {contact_obj.name}: {contact_obj.subject}')
-            messages.success(request, 'Thank you for your message! We will get back to you soon.')
+                Notification.objects.create(
+                    user=admin,
+                    title="New Contact Message",
+                    message=f"New message from {contact_obj.name}: {contact_obj.subject}",
+                    notification_type="contact_message",
+                    related_url=f"/admin-dashboard/"
+                )
+            
+            from django.contrib import messages
+            if contact_obj.contact_type == 'business' or contact_obj.business:
+                messages.success(request, 'Your business change request has been sent. We will review and respond shortly.')
+            else:
+                messages.success(request, 'Your message has been sent successfully. We will get back to you soon.')
             return redirect('business_listings:contact')
     else:
-        form = ContactForm()
+        form = ContactForm(user=request.user, initial=initial)
     
     context = {
         'form': form,
@@ -360,14 +392,40 @@ def category_detail(request, category_id):
 
 @login_required
 def my_businesses(request):
-    """User's business listings"""
     businesses = Business.objects.filter(owner=request.user).order_by('-created_at')
+    total = businesses.count()
+    active = businesses.filter(status='active').count()
+    pending = businesses.filter(status='pending').count()
+    rejected = businesses.filter(status='suspended').count()
+    
+    # Get user's contact messages and replies
+    user_contacts = Contact.objects.filter(email=request.user.email).order_by('-created_at')
+    contact_replies = ContactReply.objects.filter(contact__email=request.user.email).order_by('-created_at')
     
     context = {
         'businesses': businesses,
+        'total': total,
+        'active': active,
+        'pending': pending,
+        'rejected': rejected,
+        'user_contacts': user_contacts,
+        'contact_replies': contact_replies,
         'title': 'My Business Listings'
     }
     return render(request, 'business_listings/my_businesses.html', context)
+
+@login_required
+def my_contact_messages(request):
+    """User's contact messages and admin replies"""
+    user_contacts = Contact.objects.filter(email=request.user.email).order_by('-created_at')
+    contact_replies = ContactReply.objects.filter(contact__email=request.user.email).order_by('-created_at')
+    
+    context = {
+        'user_contacts': user_contacts,
+        'contact_replies': contact_replies,
+        'title': 'My Contact Messages'
+    }
+    return render(request, 'business_listings/my_contact_messages.html', context)
 
 def search_suggestions(request):
     """AJAX endpoint for search suggestions, only for the owner's businesses"""
@@ -413,32 +471,97 @@ def admin_login(request):
 
 @user_passes_test(lambda u: u.is_staff)
 def admin_dashboard(request):
-    from .models import Business, Review, Contact
+    """Admin dashboard"""
+    if not request.user.is_staff:
+        return redirect('admin:login')
+    
+    # Get business statistics
     total_businesses = Business.objects.count()
     pending_businesses = Business.objects.filter(status='pending').count()
-    approved_businesses = Business.objects.filter(status='active').count()
-    rejected_businesses = Business.objects.filter(status='suspended').count()
-    total_reviews = Review.objects.count()
-    businesses = Business.objects.all().order_by('-created_at')[:20]
-    recent_contacts = Contact.objects.all().order_by('-created_at')[:5]
-    pending_subscriptions = UserSubscription.objects.filter(status='pending').order_by('-created_at')
+    active_businesses = Business.objects.filter(status='active').count()
+    suspended_businesses = Business.objects.filter(status='suspended').count()
     
-    # Get notifications for the current admin user
-    admin_notifications = Notification.objects.filter(user=request.user).order_by('-created_at')[:10]
-    unread_notification_count = Notification.objects.filter(user=request.user, is_read=False).count()
+    # Get recent businesses
+    recent_businesses = Business.objects.order_by('-created_at')[:5]
     
-    return render(request, 'admin/admin_dashboard.html', {
+    # Get business change requests (contact messages with business or business type)
+    business_requests = Contact.objects.filter(
+        Q(contact_type='business') | Q(business__isnull=False)
+    ).order_by('-created_at')[:10]
+    
+    # Get unread contact messages
+    unread_contacts = Contact.objects.filter(is_read=False).count()
+    
+    context = {
         'total_businesses': total_businesses,
         'pending_businesses': pending_businesses,
-        'approved_businesses': approved_businesses,
-        'rejected_businesses': rejected_businesses,
-        'total_reviews': total_reviews,
-        'businesses': businesses,
-        'recent_contacts': recent_contacts,
-        'pending_subscriptions': pending_subscriptions,
-        'admin_notifications': admin_notifications,
-        'unread_notification_count': unread_notification_count,
-    })
+        'active_businesses': active_businesses,
+        'suspended_businesses': suspended_businesses,
+        'recent_businesses': recent_businesses,
+        'business_requests': business_requests,
+        'unread_contacts': unread_contacts,
+        'title': 'Admin Dashboard'
+    }
+    return render(request, 'admin/admin_dashboard.html', context)
+
+@login_required
+def admin_reply_contact(request, contact_id):
+    """Admin reply to contact message"""
+    if not request.user.is_staff:
+        return redirect('admin:login')
+    
+    contact = get_object_or_404(Contact, id=contact_id)
+    
+    if request.method == 'POST':
+        message = request.POST.get('message')
+        if message:
+            reply = ContactReply.objects.create(
+                contact=contact,
+                admin=request.user,
+                message=message
+            )
+            
+            # Mark contact as read
+            contact.is_read = True
+            contact.save()
+            
+            # Create notification for the user
+            try:
+                user = User.objects.get(email=contact.email)
+                Notification.objects.create(
+                    user=user,
+                    title="Admin Reply Received",
+                    message=f"Admin has replied to your message: '{contact.subject}'",
+                    notification_type="contact_reply",
+                    related_url=f"/my-contact-messages/"
+                )
+            except User.DoesNotExist:
+                pass  # User might not be registered
+            
+            from django.contrib import messages
+            messages.success(request, f'Reply sent to {contact.name}')
+            
+            return redirect('business_listings:admin_dashboard')
+    
+    context = {
+        'contact': contact,
+        'title': f'Reply to {contact.subject}'
+    }
+    return render(request, 'admin/reply_contact.html', context)
+
+@login_required
+def admin_delete_contact(request, contact_id):
+    """Admin delete contact message"""
+    if not request.user.is_staff:
+        return redirect('admin:login')
+    
+    contact = get_object_or_404(Contact, id=contact_id)
+    contact.delete()
+    
+    from django.contrib import messages
+    messages.success(request, 'Contact message deleted successfully.')
+    
+    return redirect('business_listings:admin_dashboard')
 
 @user_passes_test(lambda u: u.is_staff)
 @require_POST

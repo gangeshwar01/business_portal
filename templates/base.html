@@ -277,7 +277,10 @@
                                 </a></li>
                                 {% else %}
                                 <li><a class="dropdown-item" href="{% url 'business_listings:my_businesses' %}">
-                                    <i class="fas fa-briefcase me-2"></i>My Businesses
+                                    <i class="fas fa-building me-2"></i>My Businesses
+                                </a></li>
+                                <li><a class="dropdown-item" href="{% url 'business_listings:my_contact_messages' %}">
+                                    <i class="fas fa-envelope me-2"></i>My Messages
                                 </a></li>
                                 {% endif %}
                                 <li><a class="dropdown-item d-flex align-items-center" href="{% url 'accounts:profile' %}#plans"><i class="fas fa-crown me-2"></i>My Plans</a></li>

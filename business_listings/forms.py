@@ -459,9 +459,27 @@ class ReviewForm(forms.ModelForm):
         }
 
 class ContactForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if user and user.is_authenticated:
+            from .models import Business
+            self.fields['business'] = forms.ModelChoiceField(
+                queryset=Business.objects.filter(owner=user),
+                required=False,
+                label='Related Business (if applicable)',
+                widget=forms.Select(attrs={'class': 'form-control'})
+            )
+        else:
+            self.fields['business'] = forms.ModelChoiceField(
+                queryset=Business.objects.none(),
+                required=False,
+                label='Related Business (if applicable)',
+                widget=forms.Select(attrs={'class': 'form-control', 'disabled': 'disabled'})
+            )
     class Meta:
         model = Contact
-        fields = ['name', 'email', 'mobile_no', 'subject', 'message', 'contact_type']
+        fields = ['name', 'email', 'mobile_no', 'subject', 'message', 'contact_type', 'business']
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -485,6 +503,9 @@ class ContactForm(forms.ModelForm):
                 'placeholder': 'Your message...'
             }),
             'contact_type': forms.Select(attrs={
+                'class': 'form-control'
+            }),
+            'business': forms.Select(attrs={
                 'class': 'form-control'
             }),
         }
@@ -537,6 +558,21 @@ class UserRegistrationForm(UserCreationForm):
         if mobile and len(mobile.replace(' ', '').replace('-', '').replace('(', '').replace(')', '')) < 10:
             raise forms.ValidationError('Please enter a valid mobile number.')
         return mobile
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email', '').lower()
+        # List of common disposable/temporary email domains
+        temp_domains = [
+            'mailinator.com', 'guerrillamail.com', '10minutemail.com', 'tempmail.com',
+            'yopmail.com', 'trashmail.com', 'getnada.com', 'dispostable.com',
+            'maildrop.cc', 'fakeinbox.com', 'mintemail.com', 'mytemp.email',
+            'throwawaymail.com', 'sharklasers.com', 'spamgourmet.com', 'mailnesia.com',
+            'emailondeck.com', 'inboxbear.com', 'mailcatch.com', 'spambox.us',
+        ]
+        domain = email.split('@')[-1]
+        if domain in temp_domains:
+            raise forms.ValidationError('Temporary/disposable email addresses are not allowed.')
+        return email
 
 class SearchForm(forms.Form):
     q = forms.CharField(
