@@ -491,7 +491,8 @@ class ContactForm(forms.ModelForm):
             }),
             'mobile_no': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Mobile No.'
+                'placeholder': 'Mobile No.',
+                'required': 'required'
             }),
             'subject': forms.TextInput(attrs={
                 'class': 'form-control',
