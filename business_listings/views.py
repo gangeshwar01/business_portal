@@ -6,7 +6,7 @@ from django.db.models import Q, Avg, Count
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib.auth.models import User
-from .models import Business, Category, Review, Contact, Newsletter
+from .models import Business, Category, Review, Contact, Newsletter, ContactReply
 from .forms import BusinessForm, ReviewForm, ContactForm, NewsletterForm
 import json
 from django.contrib.auth import authenticate, login, logout
@@ -478,8 +478,10 @@ def admin_dashboard(request):
     # Get business statistics
     total_businesses = Business.objects.count()
     pending_businesses = Business.objects.filter(status='pending').count()
-    active_businesses = Business.objects.filter(status='active').count()
-    suspended_businesses = Business.objects.filter(status='suspended').count()
+    approved_businesses = Business.objects.filter(status='active').count()
+    rejected_businesses = Business.objects.filter(status='suspended').count()
+    active_businesses = approved_businesses
+    suspended_businesses = rejected_businesses
     
     # Get recent businesses
     recent_businesses = Business.objects.order_by('-created_at')[:5]
@@ -491,15 +493,26 @@ def admin_dashboard(request):
     
     # Get unread contact messages
     unread_contacts = Contact.objects.filter(is_read=False).count()
-    
+
+    # Admin notifications (show latest 10 for staff)
+    from accounts.models import Notification, UserSubscription
+    admin_notifications = Notification.objects.filter(user=request.user).order_by('-created_at')[:10]
+
+    # Pending subscriptions
+    pending_subscriptions = UserSubscription.objects.filter(status='pending').order_by('-created_at')
+
     context = {
-        'total_businesses': total_businesses,
-        'pending_businesses': pending_businesses,
-        'active_businesses': active_businesses,
-        'suspended_businesses': suspended_businesses,
+        'total_businesses': total_businesses or 0,
+        'pending_businesses': pending_businesses or 0,
+        'approved_businesses': approved_businesses or 0,
+        'rejected_businesses': rejected_businesses or 0,
+        'active_businesses': active_businesses or 0,
+        'suspended_businesses': suspended_businesses or 0,
         'recent_businesses': recent_businesses,
         'business_requests': business_requests,
         'unread_contacts': unread_contacts,
+        'admin_notifications': admin_notifications,
+        'pending_subscriptions': pending_subscriptions,
         'title': 'Admin Dashboard'
     }
     return render(request, 'admin/admin_dashboard.html', context)

@@ -131,7 +131,7 @@
             </div>
           </div>
         </div>
-        <!-- Notifications Section -->
+        {% if not user.is_staff %}
         <div class="card mb-4">
             <div class="card-header bg-light d-flex align-items-center">
                 <i class="fas fa-bell text-warning me-2"></i><strong>Notifications</strong>
@@ -168,6 +168,7 @@
                 </ul>
             </div>
         </div>
+{% endif %}
 
         <!-- My Businesses Section -->
         <div class="card mb-4">
