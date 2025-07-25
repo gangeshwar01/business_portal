@@ -412,8 +412,8 @@ def my_businesses(request):
 def my_contact_messages(request):
     """User's contact messages and admin replies"""
     user_contacts = Contact.objects.filter(email=request.user.email).order_by('-created_at')
-    contact_replies = ContactReply.objects.filter(contact__email=request.user.email).order_by('-created_at')
-    
+    # Only show replies to the logged-in user's own contacts
+    contact_replies = ContactReply.objects.filter(contact__in=user_contacts).order_by('-created_at')
     context = {
         'user_contacts': user_contacts,
         'contact_replies': contact_replies,

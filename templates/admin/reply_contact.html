@@ -14,12 +14,12 @@
                         Reply to Contact Message
                     </h4>
                 </div>
-                <div class="card-body p-4">
+                <div class="card-body p-4" style="background-color: cadetblue;">
                     <!-- Original Message -->
                     <div class="mb-4">
                         <h6 class="text-muted mb-2">Original Message from {{ contact.name }}</h6>
                         <div class="card bg-light">
-                            <div class="card-body" style="background-color: cadetblue;">
+                            <div class="card-body">
                                 <p><strong>Subject:</strong> {{ contact.subject }}</p>
                                 <p><strong>Email:</strong> {{ contact.email }}</p>
                                 {% if contact.business %}

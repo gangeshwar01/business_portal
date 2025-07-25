@@ -581,6 +581,10 @@ class UserRegistrationForm(UserCreationForm):
         domain = email.split('@')[-1]
         if domain in temp_domains:
             raise forms.ValidationError('Temporary/disposable email addresses are not allowed.')
+        # Check for existing user with this email
+        from django.contrib.auth.models import User
+        if User.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError('This email address has already been registered. Please log in or use a different email.')
         return email
 
 class SearchForm(forms.Form):
