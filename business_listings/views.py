@@ -498,6 +498,9 @@ def admin_dashboard(request):
     # Pending subscriptions
     pending_subscriptions = UserSubscription.objects.filter(status='pending').order_by('-created_at')
 
+    # All businesses for admin table (pending, approved, rejected, etc.)
+    businesses = Business.objects.all().order_by('-created_at')
+
     context = {
         'total_businesses': total_businesses or 0,
         'pending_businesses': pending_businesses or 0,
@@ -510,6 +513,7 @@ def admin_dashboard(request):
         'unread_contacts': unread_contacts,
         'admin_notifications': admin_notifications,
         'pending_subscriptions': pending_subscriptions,
+        'businesses': businesses,
         'title': 'Admin Dashboard'
     }
     return render(request, 'admin/admin_dashboard.html', context)
