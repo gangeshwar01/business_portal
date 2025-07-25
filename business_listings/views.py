@@ -498,6 +498,9 @@ def admin_dashboard(request):
     # All businesses for admin table (pending, approved, rejected, etc.)
     businesses = Business.objects.all().order_by('-created_at')
 
+    # Recent contact messages for admin dashboard
+    recent_contacts = Contact.objects.order_by('-created_at')[:10]
+
     context = {
         'total_businesses': total_businesses or 0,
         'pending_businesses': pending_businesses or 0,
@@ -511,6 +514,7 @@ def admin_dashboard(request):
         'admin_notifications': admin_notifications,
         'pending_subscriptions': pending_subscriptions,
         'businesses': businesses,
+        'recent_contacts': recent_contacts,
         'title': 'Admin Dashboard'
     }
     return render(request, 'admin/admin_dashboard.html', context)

@@ -477,6 +477,14 @@ class ContactForm(forms.ModelForm):
                 label='Related Business (if applicable)',
                 widget=forms.Select(attrs={'class': 'form-control', 'disabled': 'disabled'})
             )
+
+    def clean_mobile_no(self):
+        mobile = self.cleaned_data.get('mobile_no', '')
+        digits = ''.join(filter(str.isdigit, mobile))
+        if len(digits) != 10:
+            raise forms.ValidationError('Please enter a valid 10-digit mobile number.')
+        return mobile
+
     class Meta:
         model = Contact
         fields = ['name', 'email', 'mobile_no', 'subject', 'message', 'contact_type', 'business']
