@@ -1,6 +1,49 @@
 {% extends 'base.html' %}
 {% block content %}
 <link rel="stylesheet" href="/static/css/admin_dashboard.css">
+<style>
+.card { border-radius: 1rem; }
+
+/* Scrollable table sections - limit to 5 items */
+.scrollable-table {
+  max-height: 400px; /* Height for approximately 5 table rows */
+  overflow-y: auto;
+}
+
+.scrollable-table table {
+  margin-bottom: 0;
+}
+
+.scrollable-table thead {
+  position: sticky;
+  top: 0;
+  background: #1e293b;
+  z-index: 10;
+}
+
+.scrollable-table thead th {
+  border-bottom: 2px solid #3f87a6;
+}
+
+/* Custom scrollbar styling */
+.scrollable-table::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollable-table::-webkit-scrollbar-track {
+  background: #232a3a;
+  border-radius: 4px;
+}
+
+.scrollable-table::-webkit-scrollbar-thumb {
+  background: #3f87a6;
+  border-radius: 4px;
+}
+
+.scrollable-table::-webkit-scrollbar-thumb:hover {
+  background: #22c55e;
+}
+</style>
 <div class="admin-dashboard-bg">
   <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -133,7 +176,7 @@
     <!-- Recent Contact Messages -->
     <div class="card mb-4">
       <div class="card-header bg-light"><strong>Recent Contact Messages</strong></div>
-      <div class="table-responsive">
+      <div class="table-responsive scrollable-table">
         <table class="table table-hover mb-0">
           <thead>
             <tr>
@@ -215,7 +258,7 @@
     
     <div class="card mb-4">
       <div class="card-header bg-light"><strong>Recent Business Listings</strong></div>
-      <div class="table-responsive">
+      <div class="table-responsive scrollable-table">
         <table class="table table-hover mb-0">
           <thead>
             <tr>
@@ -296,7 +339,7 @@
     <!-- Pending Subscription Activations Section -->
     <div class="card mb-4">
       <div class="card-header bg-light"><strong>Pending Subscription Activations</strong></div>
-      <div class="table-responsive">
+      <div class="table-responsive scrollable-table">
         <table class="table table-hover mb-0">
           <thead>
             <tr>
@@ -344,7 +387,7 @@
     <!-- Active Subscriptions Section -->
     <div class="card mb-4">
       <div class="card-header bg-light"><strong>Active Subscriptions</strong></div>
-      <div class="table-responsive">
+      <div class="table-responsive scrollable-table">
         <table class="table table-hover mb-0">
           <thead>
             <tr>
@@ -389,7 +432,7 @@
                 </div>
                 <div class="card-body">
                     {% if business_requests %}
-                        <div class="table-responsive">
+                        <div class="table-responsive scrollable-table">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -450,7 +493,4 @@
         </div>
     </div>
 
-<style>
-.card { border-radius: 1rem; }
-</style>
 {% endblock %} 
