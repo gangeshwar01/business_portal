@@ -33,13 +33,6 @@
                                     {% endif %}
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="{{ form.email.id_for_label }}" class="form-label">Email Address *</label>
-                                    {{ form.email }}
-                                    {% if form.email.errors %}
-                                        <div class="text-danger small">{{ form.email.errors.0 }}</div>
-                                    {% endif %}
-                                </div>
-                                <div class="col-md-6 mb-3">
                                     <label for="{{ form.mobile_no.id_for_label }}" class="form-label" required>Mobile No.*</label>
                                     {{ form.mobile_no }}
                                     {% if form.mobile_no.errors %}

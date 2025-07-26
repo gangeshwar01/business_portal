@@ -487,15 +487,11 @@ class ContactForm(forms.ModelForm):
 
     class Meta:
         model = Contact
-        fields = ['name', 'email', 'mobile_no', 'subject', 'message', 'contact_type', 'business']
+        fields = ['name', 'mobile_no', 'subject', 'message', 'contact_type', 'business']
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Your name'
-            }),
-            'email': forms.EmailInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Your email'
             }),
             'mobile_no': forms.TextInput(attrs={
                 'class': 'form-control',

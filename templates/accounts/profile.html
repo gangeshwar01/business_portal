@@ -25,6 +25,7 @@
                         </div>
                         <h4>{{ user.get_full_name|default:user.username }}</h4>
                         <p class="text-muted">@{{ user.username }}</p>
+                        <p class="text-muted"><i class="fas fa-envelope me-1"></i>{{ user.email }}</p>
                         <p class="text-muted">Member since {{ user.date_joined|date:"F Y" }}</p>
                         <div class="d-grid gap-2">
                             <a href="{% url 'business_listings:add_business' %}" class="btn btn-primary">

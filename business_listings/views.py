@@ -295,7 +295,9 @@ def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST, user=request.user)
         if form.is_valid():
-            contact_obj = form.save()
+            contact_obj = form.save(commit=False)
+            contact_obj.email = request.user.email  # Set email from logged-in user
+            contact_obj.save()
             
             # Notify all admins about the contact message
             admin_users = User.objects.filter(is_staff=True)
