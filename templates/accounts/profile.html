@@ -2,6 +2,104 @@
 
 {% block content %}
 <link rel="stylesheet" href="/static/css/profile.css">
+<style>
+/* Scrollable sections for profile - limit to 5 items */
+.scrollable-list {
+  max-height: 400px; /* Height for approximately 5 list items */
+  overflow-y: auto;
+  overflow-x: auto; /* Enable horizontal scrolling */
+}
+
+.scrollable-table {
+  max-height: 400px; /* Height for approximately 5 table rows */
+  overflow-y: auto;
+  overflow-x: auto; /* Enable horizontal scrolling */
+}
+
+.scrollable-table table {
+  margin-bottom: 0;
+  min-width: 600px; /* Ensure minimum width for mobile */
+}
+
+.scrollable-table thead {
+  position: sticky;
+  top: 0;
+  background: #e0f2fe;
+  z-index: 10;
+}
+
+.scrollable-table thead th {
+  border-bottom: 2px solid #b2f5ea;
+  white-space: nowrap; /* Prevent text wrapping in headers */
+}
+
+.scrollable-table tbody td {
+  white-space: nowrap; /* Prevent text wrapping in cells */
+}
+
+.scrollable-grid {
+  max-height: 500px; /* Height for approximately 5 card items */
+  overflow-y: auto;
+  overflow-x: auto; /* Enable horizontal scrolling */
+}
+
+/* Custom scrollbar styling for profile theme */
+.scrollable-list::-webkit-scrollbar,
+.scrollable-table::-webkit-scrollbar,
+.scrollable-grid::-webkit-scrollbar {
+  width: 8px;
+  height: 8px; /* For horizontal scrollbar */
+}
+
+.scrollable-list::-webkit-scrollbar-track,
+.scrollable-table::-webkit-scrollbar-track,
+.scrollable-grid::-webkit-scrollbar-track {
+  background: #f0f9ff;
+  border-radius: 4px;
+}
+
+.scrollable-list::-webkit-scrollbar-thumb,
+.scrollable-table::-webkit-scrollbar-thumb,
+.scrollable-grid::-webkit-scrollbar-thumb {
+  background: #22c55e;
+  border-radius: 4px;
+}
+
+.scrollable-list::-webkit-scrollbar-thumb:hover,
+.scrollable-table::-webkit-scrollbar-thumb:hover,
+.scrollable-grid::-webkit-scrollbar-thumb:hover {
+  background: #15803d;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .scrollable-list {
+    max-height: 300px; /* Smaller height on mobile */
+  }
+  
+  .scrollable-table {
+    max-height: 300px; /* Smaller height on mobile */
+  }
+  
+  .scrollable-table table {
+    min-width: 800px; /* Wider minimum width on mobile */
+    font-size: 0.9rem;
+  }
+  
+  .scrollable-table th,
+  .scrollable-table td {
+    padding: 0.5rem 0.3rem;
+  }
+  
+  .scrollable-grid {
+    max-height: 400px; /* Smaller height on mobile */
+  }
+  
+  .scrollable-grid .row {
+    min-width: 600px; /* Ensure minimum width for card grid */
+  }
+}
+</style>
 <div class="profile-main">
     <div class="container py-5">
         <div class="row">
@@ -141,7 +239,7 @@
                 {% endif %}
             </div>
             <div class="card-body">
-                <ul class="list-group">
+                <ul class="list-group scrollable-list">
                     {% if notifications %}
                         {% for notif in notifications %}
                             <li class="list-group-item d-flex justify-content-between align-items-center {% if not notif.is_read %}fw-bold{% endif %}">
@@ -180,7 +278,7 @@
             </div>
             <div class="card-body">
                 {% if user_businesses %}
-                    <div class="table-responsive">
+                    <div class="table-responsive scrollable-table">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
@@ -250,7 +348,7 @@
                   </div>
                 {% endif %}
                 {% if all_subscriptions and all_subscriptions|length > 0 %}
-                  <div class="table-responsive">
+                  <div class="table-responsive scrollable-table">
                       <table class="table table-hover">
                           <thead>
                               <tr>
@@ -300,7 +398,7 @@
             </div>
             <div class="card-body">
                 {% if admin_reviews_for_user_businesses %}
-                    <div class="row">
+                    <div class="row scrollable-grid">
                         {% for review in admin_reviews_for_user_businesses %}
                         <div class="col-md-6 mb-3">
                             <div class="card border border-info">

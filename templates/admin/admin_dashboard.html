@@ -8,10 +8,12 @@
 .scrollable-table {
   max-height: 400px; /* Height for approximately 5 table rows */
   overflow-y: auto;
+  overflow-x: auto; /* Enable horizontal scrolling */
 }
 
 .scrollable-table table {
   margin-bottom: 0;
+  min-width: 600px; /* Ensure minimum width for mobile */
 }
 
 .scrollable-table thead {
@@ -23,11 +25,17 @@
 
 .scrollable-table thead th {
   border-bottom: 2px solid #3f87a6;
+  white-space: nowrap; /* Prevent text wrapping in headers */
+}
+
+.scrollable-table tbody td {
+  white-space: nowrap; /* Prevent text wrapping in cells */
 }
 
 /* Custom scrollbar styling */
 .scrollable-table::-webkit-scrollbar {
   width: 8px;
+  height: 8px; /* For horizontal scrollbar */
 }
 
 .scrollable-table::-webkit-scrollbar-track {
@@ -42,6 +50,23 @@
 
 .scrollable-table::-webkit-scrollbar-thumb:hover {
   background: #22c55e;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .scrollable-table {
+    max-height: 300px; /* Smaller height on mobile */
+  }
+  
+  .scrollable-table table {
+    min-width: 800px; /* Wider minimum width on mobile */
+    font-size: 0.9rem;
+  }
+  
+  .scrollable-table th,
+  .scrollable-table td {
+    padding: 0.5rem 0.3rem;
+  }
 }
 </style>
 <div class="admin-dashboard-bg">

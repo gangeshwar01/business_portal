@@ -113,12 +113,13 @@
   .mb-3.text-end, .mb-4.text-white {
     margin-bottom: 0.7rem !important;
   }
+  /* Remove the fixed table width to allow horizontal scrolling */
   .table {
-    min-width: 600px;
     font-size: 0.95rem;
   }
   .table-responsive {
     overflow-x: auto;
+    overflow-y: auto;
   }
 } 
 
@@ -209,6 +210,7 @@
 @media (max-width: 576px) {
   .table-responsive {
     overflow-x: auto;
+    overflow-y: auto;
   }
   .table th, .table td {
     font-size: 0.92rem !important;
