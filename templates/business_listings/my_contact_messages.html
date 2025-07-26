@@ -4,6 +4,55 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
+<style>
+/* Scrollable sections for contact messages - limit to 5 items */
+.scrollable-list {
+  max-height: 400px !important; /* Height for approximately 5 list items */
+  overflow-y: auto !important;
+  overflow-x: auto !important; /* Enable horizontal scrolling */
+}
+
+/* Custom scrollbar styling for contact messages theme */
+.scrollable-list::-webkit-scrollbar {
+  width: 8px;
+  height: 8px; /* For horizontal scrollbar */
+}
+
+.scrollable-list::-webkit-scrollbar-track {
+  background: #f0f9ff;
+  border-radius: 4px;
+}
+
+.scrollable-list::-webkit-scrollbar-thumb {
+  background: #007cf0;
+  border-radius: 4px;
+}
+
+.scrollable-list::-webkit-scrollbar-thumb:hover {
+  background: #0056b3;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .scrollable-list {
+    max-height: 300px !important; /* Smaller height on mobile */
+  }
+  
+  .list-group-item {
+    font-size: 0.9rem !important;
+    padding: 0.8rem !important;
+  }
+  
+  .list-group-item h6 {
+    font-size: 1rem !important;
+  }
+  
+  .list-group-item p {
+    font-size: 0.85rem !important;
+  }
+}
+</style>
+
 <div class="container py-5">
     <div class="row">
         <div class="col-12">
@@ -30,7 +79,7 @@
                 </div>
                 <div class="card-body" style="background-color: cadetblue;">
                     {% if user_contacts %}
-                        <div class="list-group list-group-flush">
+                        <div class="list-group list-group-flush scrollable-list">
                             {% for contact in user_contacts %}
                             <div class="list-group-item">
                                 <div class="d-flex justify-content-between align-items-start">
@@ -85,7 +134,7 @@
                     </h5>
                 </div>
                 <div class="card-body" style="background-color: cadetblue;">
-                    <div class="list-group list-group-flush">
+                    <div class="list-group list-group-flush scrollable-list">
                         {% for reply in contact_replies %}
                         <div class="list-group-item">
                             <div class="d-flex justify-content-between align-items-start">

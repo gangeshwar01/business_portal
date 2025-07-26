@@ -6,9 +6,9 @@
 
 /* Scrollable table sections - limit to 5 items */
 .scrollable-table {
-  max-height: 400px; /* Height for approximately 5 table rows */
-  overflow-y: auto;
-  overflow-x: auto; /* Enable horizontal scrolling */
+  max-height: 300px !important; /* Height for approximately 5 table rows on desktop */
+  overflow-y: auto !important;
+  overflow-x: auto !important; /* Enable horizontal scrolling */
 }
 
 .scrollable-table table {
@@ -17,7 +17,7 @@
 }
 
 .scrollable-table thead {
-  position: sticky;
+  position: sticky !important;
   top: 0;
   background: #1e293b;
   z-index: 10;
@@ -55,7 +55,7 @@
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {
   .scrollable-table {
-    max-height: 300px; /* Smaller height on mobile */
+    max-height: 250px !important; /* Smaller height on mobile */
   }
   
   .scrollable-table table {
