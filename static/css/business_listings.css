@@ -422,6 +422,6 @@ section.business-results-section {
   }
 } 
 
-.text-info {
+.card .card-body .text-info {
   color: #ed4920 !important;
-} 
+}
