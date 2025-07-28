@@ -218,3 +218,7 @@
     white-space: nowrap;
   }
 } 
+
+.card .text-info {
+  color: #e55741 !important;
+} 
