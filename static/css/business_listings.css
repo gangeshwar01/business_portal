@@ -421,3 +421,7 @@ section.business-results-section {
     width: 0px !important;
   }
 } 
+
+.text-info {
+  color: #ed4920 !important;
+} 
